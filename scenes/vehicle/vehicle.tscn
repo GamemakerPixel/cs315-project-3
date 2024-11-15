@@ -1,17 +1,46 @@
-[gd_scene load_steps=3 format=3 uid="uid://boqwelsica5mm"]
+[gd_scene load_steps=7 format=3 uid="uid://boqwelsica5mm"]
 
 [ext_resource type="Script" path="res://scenes/vehicle/vehicle.gd" id="1_j05m0"]
+[ext_resource type="Shader" path="res://resources/shaders/pixel_art_post_processing.gdshader" id="2_r2xvu"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lp1uq"]
 
-[node name="Vehicle" type="CharacterBody3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bgrtt"]
+albedo_color = Color(0.1638, 0.223123, 0.26, 1)
+metallic = 0.55
+roughness = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sej1v"]
+render_priority = 0
+shader = ExtResource("2_r2xvu")
+shader_parameter/depth_outline_threshold = 0.05
+shader_parameter/normal_outline_threshold = 0.6
+shader_parameter/depth_outline_value_scale = 0.25
+shader_parameter/normal_outline_value_scale = 1.5
+shader_parameter/normal_edge_bias = Vector3(1, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ir4sd"]
+material = SubResource("ShaderMaterial_sej1v")
+flip_faces = true
+size = Vector2(2, 2)
+
+[node name="Vehicle" type="AnimatableBody3D"]
+sync_to_physics = false
 script = ExtResource("1_j05m0")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_lp1uq")
+surface_material_override/0 = SubResource("StandardMaterial3D_bgrtt")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 10)
 projection = 1
+current = true
 size = 15.0
+
+[node name="ScreenSpaceShader" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, -14.1421)
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_ir4sd")
+skeleton = NodePath("../../..")
