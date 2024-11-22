@@ -1,0 +1,23 @@
+[gd_resource type="Shader" format=3 uid="uid://day77b1gm0mfx"]
+
+[resource]
+code = "shader_type spatial;
+
+varying vec3 world_position;
+
+
+void vertex() {
+	world_position = (NODE_POSITION_WORLD + VERTEX);
+}
+
+void fragment() {
+	ALBEDO.r = sin(world_position.x);
+	ALBEDO.g = sin(world_position.z);
+	ALBEDO.b = 0.0;
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the material.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"

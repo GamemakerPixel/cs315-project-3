@@ -45,7 +45,7 @@ float layered_noise(vec2 uv, int octaves) {
 		max_value += value_scale;
 		result += noise(uv * uv_scale) * value_scale;
 	}
-	
+
 	return result / max_value;
 }
 
@@ -53,18 +53,18 @@ float layered_noise(vec2 uv, int octaves) {
 vec3 calculate_normal(vec2 uv) {
 	float center_depth = layered_noise(uv, normal_octaves);
 	float nearby_depths[4];
-	
+
 	nearby_depths[0] = layered_noise(uv + vec2(1.0, 0.0), normal_octaves);
 	nearby_depths[1] = layered_noise(uv + vec2(-1.0, 0.0), normal_octaves);
 	nearby_depths[2] = layered_noise(uv + vec2(0.0, 1.0), normal_octaves);
 	nearby_depths[3] = layered_noise(uv + vec2(0.0, -1.0), normal_octaves);
-	
+
 	float nearby_differences[4];
-	
+
 	for (int index = 0; index < nearby_differences.length(); index++) {
 		nearby_differences[index] = center_depth - nearby_depths[index];
 	}
-	
+
 	// <1, 0> = angled right
 	// <-1, 0> = angled left
 	// <0, 1> = angled up
@@ -73,16 +73,16 @@ vec3 calculate_normal(vec2 uv) {
 		(nearby_differences[0] + nearby_differences[1]) / 2.0,
 		(nearby_differences[2] + nearby_differences[3]) / 2.0
 	);
-	
+
 	vec2 normalized_differences = (average_differences + 1.0) / 2.0;
-	
+
 	return vec3(normalized_differences, 1.0);
 }
 
 
 void fragment() {
 	vec2 world_uv = world_position.xz * base_uv_scale;
-	
+
 	float noise_value = layered_noise(world_uv, color_octaves);
 	ALBEDO = texture(color_gradient, vec2(noise_value, 0.0)).rgb;
 	ROUGHNESS = roughness;

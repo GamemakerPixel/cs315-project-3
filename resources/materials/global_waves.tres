@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dq4po646n30u8"]
+
+[ext_resource type="Shader" uid="uid://day77b1gm0mfx" path="res://resources/shaders/global_waves.tres" id="1_7oq4m"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_7oq4m")

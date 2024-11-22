@@ -1,10 +1,10 @@
 extends AnimatableBody3D
 
-const MAX_LINEAR_SPEED = 3 # m/sec
-const LINEAR_ACCELERATION = 3 # m/sec^2
-const LINEAR_DECELERATION = 12 # m/sec^2
+const MAX_LINEAR_SPEED = 1.5 # m/sec
+const LINEAR_ACCELERATION = 1.5 # m/sec^2
+const LINEAR_DECELERATION = 6 # m/sec^2
 
-const MAX_ROTATION_SPEED = 0.1 # rot/sec
+const MAX_ROTATION_SPEED = 0.05 # rot/sec
 const ROTATION_ACCELERATION = 0.2 # rot/sec^2
 const ROTATION_DECELERATION = 0.3 # rot/sec^2
 
@@ -14,13 +14,14 @@ var _turn_input := 0
 var _current_linear_velocity = 0.0
 var _current_rotational_velocity = 0.0
 
-
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("forward") or event.is_action("backward"):
 		_drive_input = int(Input.get_axis("backward", "forward"))
 	if event.is_action("turn_left") or event.is_action("turn_right"):
 		_turn_input = int(Input.get_axis("turn_right", "turn_left"))
-	
+	if event.is_action_pressed("place"):
+		var tile_coords = $PlacementPreview.get_current_tile_coordinates()
+		$GridMap.set_cell_item(tile_coords, 0)
 
 
 func _physics_process(delta: float) -> void:

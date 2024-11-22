@@ -1,0 +1,12 @@
+# Blender 4.2.3 LTS MTL File: 'metal_platform.blend'
+# www.blender.org
+
+newmtl PlatformMetal
+Ns 471.095062
+Ka 0.263636 0.263636 0.263636
+Kd 0.052322 0.057851 0.087419
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3

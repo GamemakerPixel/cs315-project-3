@@ -1,14 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://boqwelsica5mm"]
+[gd_scene load_steps=10 format=3 uid="uid://boqwelsica5mm"]
 
 [ext_resource type="Script" path="res://scenes/vehicle/vehicle.gd" id="1_j05m0"]
+[ext_resource type="ArrayMesh" uid="uid://bypoghdjajqw1" path="res://assets/meshes/buildings/metal_platform.obj" id="2_4kpco"]
 [ext_resource type="Shader" path="res://resources/shaders/pixel_art_post_processing.gdshader" id="2_r2xvu"]
+[ext_resource type="Material" uid="uid://djm1g5dt5qivd" path="res://resources/materials/outline.tres" id="4_2o0we"]
+[ext_resource type="Script" path="res://scenes/vehicle/mouse_detector.gd" id="4_ysd1y"]
+[ext_resource type="Script" path="res://scenes/maps/move_to_click.gd" id="6_bu2n3"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_lp1uq"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bgrtt"]
-albedo_color = Color(0.1638, 0.223123, 0.26, 1)
-metallic = 0.55
-roughness = 0.7
+[sub_resource type="MeshLibrary" id="MeshLibrary_aid47"]
+item/0/name = "Platform"
+item/0/mesh = ExtResource("2_4kpco")
+item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/shapes = []
+item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/navigation_layers = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sej1v"]
 render_priority = 0
@@ -19,7 +24,7 @@ shader_parameter/depth_outline_value_scale = 0.25
 shader_parameter/normal_outline_value_scale = 1.5
 shader_parameter/normal_edge_bias = Vector3(1, 1, 1)
 
-[sub_resource type="QuadMesh" id="QuadMesh_ir4sd"]
+[sub_resource type="QuadMesh" id="QuadMesh_e2uqx"]
 material = SubResource("ShaderMaterial_sej1v")
 flip_faces = true
 size = Vector2(2, 2)
@@ -28,19 +33,45 @@ size = Vector2(2, 2)
 sync_to_physics = false
 script = ExtResource("1_j05m0")
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.5, 0)
-mesh = SubResource("BoxMesh_lp1uq")
-surface_material_override/0 = SubResource("StandardMaterial3D_bgrtt")
+[node name="PlacementPreview" type="MeshInstance3D" parent="." node_paths=PackedStringArray("mouse_detector", "gridmap")]
+transform = Transform3D(0.707814, 0, 0.707814, 0, 1.001, 0, -0.707814, 0, 0.707814, 0, 0, 0)
+mesh = ExtResource("2_4kpco")
+surface_material_override/0 = ExtResource("4_2o0we")
+script = ExtResource("6_bu2n3")
+mouse_detector = NodePath("../MouseDetector")
+gridmap = NodePath("../GridMap")
+
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="GridMap" type="GridMap" parent="."]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, -0.5, 0)
+mesh_library = SubResource("MeshLibrary_aid47")
+cell_size = Vector3(2, 1, 2)
+data = {
+"cells": PackedInt32Array(0, 0, 0, 65535, 65535, 0, 0, 65535, 0, 65535, 0, 0)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 10)
+keep_aspect = 0
 projection = 1
 current = true
-size = 15.0
+size = 22.627
 
 [node name="ScreenSpaceShader" type="MeshInstance3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, -14.1421)
 extra_cull_margin = 16384.0
-mesh = SubResource("QuadMesh_ir4sd")
+mesh = SubResource("QuadMesh_e2uqx")
 skeleton = NodePath("../../..")
+
+[node name="MouseDetector" type="Control" parent="." node_paths=PackedStringArray("camera")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("4_ysd1y")
+camera = NodePath("../Camera3D")
