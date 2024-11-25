@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://cgdlk7toi888"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://cgdlk7toi888"]
 
 [ext_resource type="FontFile" uid="uid://dfd4in37xfb0w" path="res://assets/fonts/exo2.ttf" id="1_xo7q5"]
 
@@ -71,6 +71,38 @@ shadow_color = Color(0.711333, 0.97, 0, 0.0784314)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o41t0"]
 bg_color = Color(0.407843, 0.32549, 0.301961, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmtml"]
+bg_color = Color(0.407843, 0.32549, 0.301961, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oic4j"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(0.32, 0.216, 0.1952, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnd4m"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(0.32, 0.216, 0.1952, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qhrql"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(0.24, 0.13696, 0.1296, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
 
 [resource]
 default_font = ExtResource("1_xo7q5")
@@ -80,4 +112,12 @@ Button/styles/focus = SubResource("StyleBoxFlat_ajla5")
 Button/styles/hover = SubResource("StyleBoxFlat_ur5r6")
 Button/styles/normal = SubResource("StyleBoxFlat_2af1l")
 Button/styles/pressed = SubResource("StyleBoxFlat_lf34n")
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20
 Panel/styles/panel = SubResource("StyleBoxFlat_o41t0")
+TabContainer/styles/panel = SubResource("StyleBoxFlat_qmtml")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_oic4j")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_gnd4m")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_qhrql")
