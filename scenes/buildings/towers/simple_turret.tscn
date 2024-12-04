@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwhnamcctebeu"]
+
+[ext_resource type="ArrayMesh" uid="uid://caii5ejccq6dq" path="res://assets/meshes/buildings/delete_indicator.obj" id="1_scltn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8lxgo"]
+albedo_color = Color(0.09246, 0.0876, 0.12, 1)
+metallic = 0.45
+roughness = 0.5
+
+[node name="SimpleTurret" type="StaticBody3D"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_scltn")
+surface_material_override/0 = SubResource("StandardMaterial3D_8lxgo")

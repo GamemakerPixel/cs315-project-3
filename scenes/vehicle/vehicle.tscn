@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://boqwelsica5mm"]
+[gd_scene load_steps=11 format=3 uid="uid://boqwelsica5mm"]
 
 [ext_resource type="Script" path="res://scenes/vehicle/vehicle.gd" id="1_j05m0"]
 [ext_resource type="ArrayMesh" uid="uid://bypoghdjajqw1" path="res://assets/meshes/buildings/metal_platform.obj" id="2_4kpco"]
+[ext_resource type="Script" path="res://scenes/vehicle/placement_system.gd" id="2_mnn6h"]
 [ext_resource type="Shader" path="res://resources/shaders/pixel_art_post_processing.gdshader" id="2_r2xvu"]
 [ext_resource type="Material" uid="uid://djm1g5dt5qivd" path="res://resources/materials/outline.tres" id="4_2o0we"]
 [ext_resource type="Script" path="res://scenes/vehicle/mouse_detector.gd" id="4_ysd1y"]
@@ -33,22 +34,26 @@ size = Vector2(2, 2)
 sync_to_physics = false
 script = ExtResource("1_j05m0")
 
-[node name="PlacementPreview" type="MeshInstance3D" parent="." node_paths=PackedStringArray("mouse_detector", "gridmap")]
+[node name="PlacementSystem" type="Node3D" parent="."]
+script = ExtResource("2_mnn6h")
+
+[node name="PlacementPreview" type="MeshInstance3D" parent="PlacementSystem" node_paths=PackedStringArray("mouse_detector", "gridmap")]
 transform = Transform3D(0.707814, 0, 0.707814, 0, 1.001, 0, -0.707814, 0, 0.707814, 0, 0, 0)
 mesh = ExtResource("2_4kpco")
+skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("4_2o0we")
 script = ExtResource("6_bu2n3")
-mouse_detector = NodePath("../MouseDetector")
+mouse_detector = NodePath("../../MouseDetector")
 gridmap = NodePath("../GridMap")
 
-[node name="Buildings" type="Node3D" parent="."]
+[node name="Buildings" type="Node3D" parent="PlacementSystem"]
 
-[node name="GridMap" type="GridMap" parent="."]
+[node name="GridMap" type="GridMap" parent="PlacementSystem"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, -0.5, 0)
 mesh_library = SubResource("MeshLibrary_aid47")
 cell_size = Vector3(2, 1, 2)
 data = {
-"cells": PackedInt32Array(0, 0, 0, 65535, 65535, 0, 0, 65535, 0, 65535, 0, 0)
+"cells": PackedInt32Array(0, 0, 0, 65535, 65535, 0, 0, 65535, 0, 65535, 0, 0, 0, 1, 0, 1, 65535, 0, 2, 65535, 0, 2, 0, 0, 2, 1, 0, 2, 2, 0, 1, 1, 0, 0, 2, 0, 65535, 2, 0, 65535, 3, 0, 65534, 3, 0, 65534, 65535, 0, 65533, 65535, 0, 65533, 0, 0, 65532, 0, 0, 65532, 1, 0, 0, 65534, 0, 0, 65533, 0, 65535, 65533, 0, 65534, 65533, 0, 65533, 65533, 0, 65534, 65534, 0, 65534, 0, 0, 65534, 1, 0, 65535, 1, 0, 1, 65532, 0, 1, 65533, 0, 2, 65534, 0, 3, 65534, 0, 1, 65534, 0)
 }
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 

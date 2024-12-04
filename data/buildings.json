@@ -1,0 +1,60 @@
+{
+	"simple_turret": {
+		"name": "Simple Turret",
+		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "tower"
+	},
+	"explosives": {
+		"name": "Explosives",
+		"mesh": "res://assets/meshes/buildings/metal_platform.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "tower"
+	},
+	"sniper": {
+		"name": "Sniper",
+		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "tower"
+	},
+	
+	
+	"coal_generator": {
+		"name": "Coal Generator",
+		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "generator"
+	},
+	"solar_panel": {
+		"name": "Solar Panel",
+		"mesh": "res://assets/meshes/buildings/metal_platform.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "generator"
+	},
+	"wind_turbine": {
+		"name": "Wind Turbine",
+		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "generator"
+	},
+	
+	
+	"coal_excavator": {
+		"name": "Coal Excavator",
+		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "gatherer"
+	},
+	"lumber_harvester": {
+		"name": "Lumber Harvester",
+		"mesh": "res://assets/meshes/buildings/metal_platform.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "gatherer"
+	},
+	"iron_excavator": {
+		"name": "Iron Excavator",
+		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
+		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
+		"category": "gatherer"
+	},
+}
