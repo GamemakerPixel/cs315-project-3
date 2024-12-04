@@ -14,14 +14,20 @@ var _turn_input := 0
 var _current_linear_velocity = 0.0
 var _current_rotational_velocity = 0.0
 
+var _currently_placing := false
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("forward") or event.is_action("backward"):
 		_drive_input = int(Input.get_axis("backward", "forward"))
 	if event.is_action("turn_left") or event.is_action("turn_right"):
 		_turn_input = int(Input.get_axis("turn_right", "turn_left"))
-	if event.is_action_pressed("place"):
-		var tile_coords = $PlacementPreview.get_current_tile_coordinates()
-		$GridMap.set_cell_item(tile_coords, 0)
+	if event.is_action("place"):
+		_currently_placing = Input.is_action_pressed("place")
+
+
+func _process(_delta: float) -> void:
+	if _currently_placing:
+		_place_at_mouse_position()
 
 
 func _physics_process(delta: float) -> void:
@@ -72,3 +78,8 @@ func _calculate_velocity(
 	if resulting_target_direction != target_direction:
 		velocity = target_velocity
 	return velocity
+
+
+func _place_at_mouse_position() -> void:
+	var tile_coords = $PlacementPreview.get_current_tile_coordinates()
+	$GridMap.set_cell_item(tile_coords, 0)

@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://bnavhwlfl3mdu"]
+[gd_scene load_steps=4 format=3 uid="uid://bnavhwlfl3mdu"]
 
 [ext_resource type="Theme" uid="uid://cgdlk7toi888" path="res://resources/themes/game_ui.tres" id="1_f2ttj"]
+[ext_resource type="Texture2D" uid="uid://ba8qkaaumibdb" path="res://assets/textures/ui/visibility_button_icon.png" id="2_gkskk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1wnug"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.407843, 0.32549, 0.301961, 1)
+corner_radius_top_left = 16
+corner_radius_bottom_left = 16
 
 [node name="UI" type="CanvasLayer"]
 
@@ -8,23 +16,33 @@
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 656.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+mouse_filter = 2
 theme = ExtResource("1_f2ttj")
+theme_override_constants/margin_right = 0
 
 [node name="HBox" type="HBoxContainer" parent="Margin"]
 layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 0
 alignment = 2
 
+[node name="VisibilityButton" type="Button" parent="Margin/HBox"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_1wnug")
+icon = ExtResource("2_gkskk")
+
 [node name="Buildings" type="TabContainer" parent="Margin/HBox"]
+visible = false
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 tab_alignment = 1
-current_tab = 2
+current_tab = 0
 
 [node name="Actions" type="MarginContainer" parent="Margin/HBox/Buildings"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -34,6 +52,7 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Generators" type="MarginContainer" parent="Margin/HBox/Buildings"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
