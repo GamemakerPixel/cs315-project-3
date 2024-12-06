@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cjy3o3qs47s7d"
+path="res://.godot/imported/placeholder.obj-be112f510ad59b64e2e23f55e5798a59.mesh"
+
+[deps]
+
+files=["res://.godot/imported/placeholder.obj-be112f510ad59b64e2e23f55e5798a59.mesh"]
+
+source_file="res://assets/meshes/enemies/placeholder.obj"
+dest_files=["res://.godot/imported/placeholder.obj-be112f510ad59b64e2e23f55e5798a59.mesh", "res://.godot/imported/placeholder.obj-be112f510ad59b64e2e23f55e5798a59.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

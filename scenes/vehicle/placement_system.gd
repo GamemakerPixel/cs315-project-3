@@ -1,5 +1,7 @@
 extends Node3D
 
+const PLATFORM_TILE = 0
+
 var placement_enabled := false : set = _set_placement_enabled
 
 var _currently_placing := false
@@ -38,7 +40,12 @@ func _place_at_mouse_position() -> void:
 	var tile_coords = $PlacementPreview.get_current_tile_coordinates()
 	
 	if _platform_placing_enabled:
-		$GridMap.set_cell_item(tile_coords, 0)
+		$GridMap.set_cell_item(tile_coords, PLATFORM_TILE)
+		return
+	
+	var platform_tile_coords = tile_coords + Vector3i.DOWN
+	# Prevents placing towers off the vehicle.
+	if $GridMap.get_cell_item(platform_tile_coords) != PLATFORM_TILE:
 		return
 	
 	var building = _current_building_scene.instantiate()

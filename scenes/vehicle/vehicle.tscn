@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://boqwelsica5mm"]
+[gd_scene load_steps=16 format=3 uid="uid://boqwelsica5mm"]
 
 [ext_resource type="Script" path="res://scenes/vehicle/vehicle.gd" id="1_j05m0"]
 [ext_resource type="ArrayMesh" uid="uid://bypoghdjajqw1" path="res://assets/meshes/buildings/metal_platform.obj" id="2_4kpco"]
@@ -7,12 +7,23 @@
 [ext_resource type="Material" uid="uid://djm1g5dt5qivd" path="res://resources/materials/outline.tres" id="4_2o0we"]
 [ext_resource type="Script" path="res://scenes/vehicle/mouse_detector.gd" id="4_ysd1y"]
 [ext_resource type="Script" path="res://scenes/maps/move_to_click.gd" id="6_bu2n3"]
+[ext_resource type="ArrayMesh" uid="uid://64r6xyxg784h" path="res://assets/meshes/buildings/watchtower.obj" id="6_u57qq"]
+[ext_resource type="Script" path="res://scenes/vehicle/screen_space_shader_control.gd" id="8_3f38d"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tyrvw"]
+radius = 0.75
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_c8v44"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wyosm"]
+size = Vector3(2, 1, 2)
 
 [sub_resource type="MeshLibrary" id="MeshLibrary_aid47"]
 item/0/name = "Platform"
 item/0/mesh = ExtResource("2_4kpco")
 item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-item/0/shapes = []
+item/0/shapes = [SubResource("BoxShape3D_wyosm"), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)]
+item/0/navigation_mesh = SubResource("NavigationMesh_c8v44")
 item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 item/0/navigation_layers = 1
 
@@ -48,12 +59,24 @@ gridmap = NodePath("../GridMap")
 
 [node name="Buildings" type="Node3D" parent="PlacementSystem"]
 
+[node name="Watchtower" type="StaticBody3D" parent="PlacementSystem/Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.414)
+
+[node name="Mesh" type="MeshInstance3D" parent="PlacementSystem/Buildings/Watchtower"]
+mesh = ExtResource("6_u57qq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlacementSystem/Buildings/Watchtower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_tyrvw")
+
 [node name="GridMap" type="GridMap" parent="PlacementSystem"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, -0.5, 0)
 mesh_library = SubResource("MeshLibrary_aid47")
 cell_size = Vector3(2, 1, 2)
+collision_layer = 2
+bake_navigation = true
 data = {
-"cells": PackedInt32Array(0, 0, 0, 65535, 65535, 0, 0, 65535, 0, 65535, 0, 0, 0, 1, 0, 1, 65535, 0, 2, 65535, 0, 2, 0, 0, 2, 1, 0, 2, 2, 0, 1, 1, 0, 0, 2, 0, 65535, 2, 0, 65535, 3, 0, 65534, 3, 0, 65534, 65535, 0, 65533, 65535, 0, 65533, 0, 0, 65532, 0, 0, 65532, 1, 0, 0, 65534, 0, 0, 65533, 0, 65535, 65533, 0, 65534, 65533, 0, 65533, 65533, 0, 65534, 65534, 0, 65534, 0, 0, 65534, 1, 0, 65535, 1, 0, 1, 65532, 0, 1, 65533, 0, 2, 65534, 0, 3, 65534, 0, 1, 65534, 0)
+"cells": PackedInt32Array(0, 0, 0, 65535, 65535, 0, 0, 65535, 0, 65535, 0, 0, 0, 1, 0, 2, 65535, 0, 2, 0, 0, 2, 1, 0, 2, 2, 0, 0, 2, 0, 65535, 2, 0, 65535, 3, 0, 65534, 3, 0, 65534, 65535, 0, 65533, 65535, 0, 65533, 0, 0, 65532, 0, 0, 65532, 1, 0, 0, 65533, 0, 65535, 65533, 0, 65534, 65533, 0, 65533, 65533, 0, 65534, 0, 0, 65534, 1, 0, 65535, 1, 0, 1, 65532, 0, 3, 65534, 0, 65533, 65534, 0, 1, 2, 0, 65532, 2, 0, 65533, 3, 0, 65532, 3, 0, 2, 3, 0, 2, 4, 0, 2, 5, 0, 1, 5, 0, 0, 5, 0, 65535, 5, 0, 65532, 65533, 0, 65531, 65533, 0, 65530, 65533, 0, 65530, 65534, 0, 65530, 65535, 0, 65530, 0, 0, 0, 65532, 0, 3, 65535, 0, 2, 65532, 0, 2, 65533, 0, 3, 65533, 0, 0, 65531, 0, 65535, 65531, 0, 65534, 65531, 0, 65533, 65531, 0, 65532, 65531, 0, 4, 65535, 0, 4, 0, 0, 4, 1, 0, 4, 2, 0, 4, 3, 0)
 }
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
@@ -62,13 +85,15 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 keep_aspect = 0
 projection = 1
 current = true
-size = 22.627
+size = 35.355
 
 [node name="ScreenSpaceShader" type="MeshInstance3D" parent="Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, -14.1421)
+visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_e2uqx")
 skeleton = NodePath("../../..")
+script = ExtResource("8_3f38d")
 
 [node name="MouseDetector" type="Control" parent="." node_paths=PackedStringArray("camera")]
 layout_mode = 3

@@ -51,3 +51,4 @@ func _on_visibility_button_pressed() -> void:
 # need it only need to connect to the signal from the UI node.
 func _on_building_selected(building: BuildingData.Building) -> void:
 	building_selected.emit(building)
+	_building_ui_visible = false

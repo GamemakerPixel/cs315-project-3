@@ -1,0 +1,107 @@
+[gd_scene load_steps=11 format=3 uid="uid://rhuax88c10ot"]
+
+[ext_resource type="ArrayMesh" uid="uid://cjy3o3qs47s7d" path="res://assets/meshes/enemies/placeholder.obj" id="1_ebdkl"]
+[ext_resource type="Script" path="res://scenes/enemies/enemy.gd" id="1_t0dhi"]
+[ext_resource type="Script" path="res://scenes/enemies/enemy_state_machine.gd" id="3_wrvlt"]
+[ext_resource type="Script" path="res://scenes/enemies/states/on_ground.gd" id="4_xcii5"]
+[ext_resource type="Script" path="res://scenes/enemies/states/mounting_vehicle.gd" id="5_02mym"]
+[ext_resource type="Script" path="res://scenes/enemies/states/on_vehicle.gd" id="6_yoxcm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o2g56"]
+
+[sub_resource type="Animation" id="Animation_vit3y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Collision:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_u5px5"]
+resource_name = "jump"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 1.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Collision:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 1.5, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wilj7"]
+_data = {
+"RESET": SubResource("Animation_vit3y"),
+"jump": SubResource("Animation_u5px5")
+}
+
+[node name="Enemy" type="Area3D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_t0dhi")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = ExtResource("1_ebdkl")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_o2g56")
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wilj7")
+}
+
+[node name="Navigation" type="NavigationAgent3D" parent="."]
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("3_wrvlt")
+
+[node name="OnGround" type="Node" parent="States"]
+script = ExtResource("4_xcii5")
+
+[node name="MountingVehicle" type="Node" parent="States"]
+script = ExtResource("5_02mym")
+
+[node name="OnVehicle" type="Node" parent="States"]
+script = ExtResource("6_yoxcm")
+
+[node name="Exploding" type="Node" parent="States"]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

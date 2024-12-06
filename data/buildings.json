@@ -1,19 +1,19 @@
 {
 	"simple_turret": {
 		"name": "Simple Turret",
-		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
+		"mesh": "res://assets/meshes/buildings/placeholder.obj",
 		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
 		"category": "tower"
 	},
 	"explosives": {
 		"name": "Explosives",
-		"mesh": "res://assets/meshes/buildings/metal_platform.obj",
+		"mesh": "res://assets/meshes/buildings/placeholder.obj",
 		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
 		"category": "tower"
 	},
 	"sniper": {
 		"name": "Sniper",
-		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
+		"mesh": "res://assets/meshes/buildings/placeholder.obj",
 		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
 		"category": "tower"
 	},
