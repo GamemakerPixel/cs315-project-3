@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://boqwelsica5mm"]
+[gd_scene load_steps=14 format=3 uid="uid://boqwelsica5mm"]
 
 [ext_resource type="Script" path="res://scenes/vehicle/vehicle.gd" id="1_j05m0"]
 [ext_resource type="ArrayMesh" uid="uid://bypoghdjajqw1" path="res://assets/meshes/buildings/metal_platform.obj" id="2_4kpco"]
@@ -8,24 +8,11 @@
 [ext_resource type="Script" path="res://scenes/vehicle/mouse_detector.gd" id="4_ysd1y"]
 [ext_resource type="Script" path="res://scenes/maps/move_to_click.gd" id="6_bu2n3"]
 [ext_resource type="ArrayMesh" uid="uid://64r6xyxg784h" path="res://assets/meshes/buildings/watchtower.obj" id="6_u57qq"]
+[ext_resource type="MeshLibrary" uid="uid://nrgg3d8fprc6" path="res://resources/mesh_libraries/vehicle_platforms.tres" id="7_p6mgu"]
 [ext_resource type="Script" path="res://scenes/vehicle/screen_space_shader_control.gd" id="8_3f38d"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_tyrvw"]
 radius = 0.75
-
-[sub_resource type="NavigationMesh" id="NavigationMesh_c8v44"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wyosm"]
-size = Vector3(2, 1, 2)
-
-[sub_resource type="MeshLibrary" id="MeshLibrary_aid47"]
-item/0/name = "Platform"
-item/0/mesh = ExtResource("2_4kpco")
-item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-item/0/shapes = [SubResource("BoxShape3D_wyosm"), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)]
-item/0/navigation_mesh = SubResource("NavigationMesh_c8v44")
-item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-item/0/navigation_layers = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sej1v"]
 render_priority = 0
@@ -71,7 +58,7 @@ shape = SubResource("CylinderShape3D_tyrvw")
 
 [node name="GridMap" type="GridMap" parent="PlacementSystem"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, -0.5, 0)
-mesh_library = SubResource("MeshLibrary_aid47")
+mesh_library = ExtResource("7_p6mgu")
 cell_size = Vector3(2, 1, 2)
 collision_layer = 2
 bake_navigation = true
