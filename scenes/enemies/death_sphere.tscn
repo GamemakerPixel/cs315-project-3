@@ -1,0 +1,179 @@
+[gd_scene load_steps=17 format=3 uid="uid://dqla6rdd355df"]
+
+[ext_resource type="Script" path="res://scenes/enemies/enemy.gd" id="1_wlg7p"]
+[ext_resource type="ArrayMesh" uid="uid://bwr2hut20tt6d" path="res://assets/meshes/enemies/death_sphere.obj" id="2_0cvvi"]
+[ext_resource type="Script" path="res://scenes/enemies/enemy_state_machine.gd" id="3_7w88x"]
+[ext_resource type="Script" path="res://scenes/enemies/states/on_ground.gd" id="4_73neg"]
+[ext_resource type="Script" path="res://scenes/enemies/states/mounting_vehicle.gd" id="5_p1jm4"]
+[ext_resource type="Script" path="res://scenes/enemies/states/on_vehicle.gd" id="6_3a4us"]
+[ext_resource type="Script" path="res://scenes/enemies/states/attacking.gd" id="7_qaobn"]
+[ext_resource type="Script" path="res://scenes/enemies/states/defeated.gd" id="8_csidi"]
+[ext_resource type="AudioStream" uid="uid://jh65i3l0eea2" path="res://assets/sound/pop.wav" id="9_5i7iv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_smlsm"]
+albedo_color = Color(0.20871, 0.20871, 0.20871, 1)
+metallic = 0.25
+roughness = 0.3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o2g56"]
+
+[sub_resource type="Animation" id="Animation_vit3y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Collision:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Mesh:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_wavwa"]
+resource_name = "death"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.8, 0.8, 0.8), Vector3(1.5, 1.5, 1.5)]
+}
+
+[sub_resource type="Animation" id="Animation_mbde3"]
+resource_name = "hurt"
+length = 0.3
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.142857, 0.285714),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1.2, 0.8, 1.2), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_u5px5"]
+resource_name = "jump"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 1.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Collision:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 1.5, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wilj7"]
+_data = {
+"RESET": SubResource("Animation_vit3y"),
+"death": SubResource("Animation_wavwa"),
+"hurt": SubResource("Animation_mbde3"),
+"jump": SubResource("Animation_u5px5")
+}
+
+[node name="DeathSphere" type="Area3D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_wlg7p")
+speed = 5.0
+max_health = 10
+damage = 5.0
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = ExtResource("2_0cvvi")
+surface_material_override/0 = SubResource("StandardMaterial3D_smlsm")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_o2g56")
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wilj7")
+}
+
+[node name="Navigation" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.2
+target_desired_distance = 1.5
+path_height_offset = 1.5
+path_max_distance = 0.01
+path_postprocessing = 1
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("3_7w88x")
+
+[node name="OnGround" type="Node" parent="States"]
+script = ExtResource("4_73neg")
+
+[node name="MountingVehicle" type="Node" parent="States"]
+script = ExtResource("5_p1jm4")
+
+[node name="OnVehicle" type="Node" parent="States"]
+script = ExtResource("6_3a4us")
+
+[node name="Attacking" type="Node" parent="States"]
+script = ExtResource("7_qaobn")
+
+[node name="Defeated" type="Node" parent="States"]
+script = ExtResource("8_csidi")
+
+[node name="Hurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_5i7iv")
+volume_db = 0.488
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

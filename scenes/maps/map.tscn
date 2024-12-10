@@ -1,0 +1,102 @@
+[gd_scene load_steps=20 format=3 uid="uid://civj3l1uq6ube"]
+
+[ext_resource type="Script" path="res://scenes/maps/map.gd" id="1_nfd2i"]
+[ext_resource type="Script" path="res://scenes/maps/enemy_manager.gd" id="2_64x2o"]
+[ext_resource type="PackedScene" uid="uid://boqwelsica5mm" path="res://scenes/vehicle/vehicle.tscn" id="3_p3i0a"]
+[ext_resource type="Script" path="res://scenes/maps/enemy_transform.gd" id="4_4yuj8"]
+[ext_resource type="MeshLibrary" uid="uid://cr6hs0bdh38a4" path="res://resources/mesh_libraries/ground.tres" id="5_g3hjg"]
+[ext_resource type="Script" path="res://scenes/maps/enemy_spawner.gd" id="5_g8w4p"]
+[ext_resource type="PackedScene" uid="uid://cyyedn7fg51ds" path="res://scenes/enemies/cuboid.tscn" id="6_fe6jp"]
+[ext_resource type="Script" path="res://scenes/maps/procedural_ground.gd" id="6_j7qx0"]
+[ext_resource type="PackedScene" uid="uid://dfhf4quxg8s8b" path="res://scenes/resource_deposits/lumber_deposit.tscn" id="7_5lgi5"]
+[ext_resource type="PackedScene" uid="uid://dqla6rdd355df" path="res://scenes/enemies/death_sphere.tscn" id="7_upwun"]
+[ext_resource type="Script" path="res://scenes/maps/ground_enemy_transform.gd" id="7_xpg5g"]
+[ext_resource type="PackedScene" uid="uid://bw3i37es6suit" path="res://scenes/enemies/pyrimidic_decimator.tscn" id="8_627j2"]
+[ext_resource type="PackedScene" uid="uid://ba03rrluxfslj" path="res://scenes/resource_deposits/coal_deposit.tscn" id="8_marcq"]
+[ext_resource type="PackedScene" uid="uid://bnavhwlfl3mdu" path="res://scenes/ui/ui.tscn" id="9_7l2v1"]
+[ext_resource type="PackedScene" uid="uid://drnnxhfq7rwxw" path="res://scenes/resource_deposits/iron_deposit.tscn" id="9_qf5aj"]
+[ext_resource type="PackedScene" uid="uid://cdw2u706qmfqx" path="res://scenes/resource_deposits/gold_deposit.tscn" id="10_kmswi"]
+[ext_resource type="AudioStream" uid="uid://ju2v8sqki3v3" path="res://assets/sound/hurt.wav" id="17_vkd5s"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2c2fy"]
+frequency = 0.0048
+
+[sub_resource type="Environment" id="Environment_caes1"]
+ambient_light_source = 2
+ambient_light_color = Color(0.4, 0.4, 0.4, 1)
+
+[node name="Map" type="SubViewportContainer" node_paths=PackedStringArray("vehicle")]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+script = ExtResource("1_nfd2i")
+vehicle = NodePath("SubViewport/World/Vehicle")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(576, 324)
+render_target_update_mode = 4
+
+[node name="World" type="Node3D" parent="SubViewport"]
+
+[node name="EnemyManager" type="Node" parent="SubViewport/World" node_paths=PackedStringArray("enemy_transforms")]
+script = ExtResource("2_64x2o")
+enemy_transforms = [NodePath("../GroundEnemyTransform"), NodePath("../Vehicle/VehicleEnemyTransform")]
+
+[node name="Vehicle" parent="SubViewport/World" instance=ExtResource("3_p3i0a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 31.4401)
+
+[node name="VehicleEnemyTransform" type="Node3D" parent="SubViewport/World/Vehicle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.414)
+script = ExtResource("4_4yuj8")
+
+[node name="EnemySpawner" type="Node3D" parent="SubViewport/World/Vehicle" node_paths=PackedStringArray("enemy_manager")]
+script = ExtResource("5_g8w4p")
+enemies = Array[PackedScene]([ExtResource("6_fe6jp"), ExtResource("7_upwun"), ExtResource("8_627j2")])
+enemy_manager = NodePath("../../EnemyManager")
+
+[node name="Sun" type="DirectionalLight3D" parent="SubViewport/World"]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, 0, 0, 0)
+shadow_enabled = true
+shadow_blur = 0.801
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.015
+directional_shadow_split_2 = 0.12
+directional_shadow_split_3 = 0.172
+
+[node name="Ground" type="GridMap" parent="SubViewport/World" node_paths=PackedStringArray("render_around")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh_library = ExtResource("5_g3hjg")
+data = {
+"cells": PackedInt32Array(-65532, 2, 1, -65531, 2, 1, -65531, 3, 1, -65532, 3, 1, -65532, 4, 1, -65532, 5, 1, -65532, 6, 1, -65533, 6, 1, -65532, 7, 1, -65531, 6, 1, -65531, 7, 2, -65531, 8, 1, -65531, 5, 1, -65531, 4, 1, -65530, 2, 2, -65530, 3, 2, -65530, 4, 2, -65530, 5, 2, -65530, 6, 2, -65530, 7, 2, -65529, 7, 2, -65528, 8, 2, -65528, 7, 2, -65528, 5, 2, -65528, 3, 2, -65528, 2, 2, -65529, 6, 2, -65529, 5, 2, -65529, 4, 2, -65528, 6, 2, -65528, 4, 2, -65529, 3, 2, -65529, 2, 2, -65527, 6, 2, -65527, 7, 2, -65527, 8, 2, -65526, 7, 2, -65526, 6, 2, -65526, 5, 2, -65526, 4, 2, -65526, 3, 2, -65526, 2, 2, -65526, 1, 2, -65525, 0, 2, -65525, 1, 2, -65525, 2, 2, -65525, 3, 2, -65527, 5, 2, -65527, 4, 2, -65527, 2, 2, -65527, 1, 2, -65527, 0, 2, -65525, 4, 2, -65525, 5, 2, -65524, 5, 2, -65524, 4, 2, -65524, 3, 2, -65523, 3, 3, -65524, 2, 3, -65524, 1, 2, -65524, 65535, 2, -65523, 65534, 2, -65523, 65533, 2, -65523, 65535, 3, -65524, 0, 2, -65526, 0, 2, -65527, 65535, 2, -65526, 65535, 2, -65525, 65535, 2, -65523, 0, 3, -65523, 1, 3, -65522, 3, 3, -65522, 4, 3, -65522, 5, 3, -65523, 2, 3, -65522, 2, 3, -65521, 2, 3, -65521, 1, 3, -65521, 0, 3, -65521, 5, 3, -65521, 6, 3, -65522, 1, 3, -65521, 4, 3, -65520, 6, 3, -65521, 3, 3, -65520, 5, 3, -65519, 6, 3, -65519, 5, 3, -65520, 3, 3, -65522, 0, 3, -65522, 65535, 3, -65520, 1, 3, -65520, 2, 3, -65519, 2, 3, -65519, 3, 3, -65519, 4, 3, -65518, 4, 3, -65518, 5, 3, -65520, 4, 3, -65518, 6, 3, -65518, 3, 3, -65517, 4, 3, -65520, 0, 3, -65519, 1, 3, -65518, 2, 3, -65521, 65535, 3, -65520, 65535, 3, -65519, 0, 3, -65523, 4, 3, -65523, 5, 3, -65523, 6, 3, -65522, 6, 3, -65522, 7, 3, -65521, 7, 3, -65520, 7, 3, -65519, 7, 3, -65518, 7, 3, -65517, 7, 3, -65517, 6, 3, -65517, 5, 3, -65518, 1, 3, -65517, 3, 3, -65517, 2, 3, -65517, 1, 3, -65517, 0, 3, -65518, 0, 3, -65518, 65535, 3, -65519, 65535, 3, -65519, 65534, 3, -65520, 65534, 3, -65521, 65534, 3, -65521, 65533, 3, -65522, 65534, 3, -65521, 65532, 3, -65520, 65532, 3, -65520, 65533, 3, -65517, 65535, 3, -65518, 65534, 3, -65519, 65533, 3, -65516, 1, 3, -65516, 2, 3, -65516, 3, 3, -65516, 4, 3, -65516, 5, 3, -65515, 5, 3, -65516, 6, 3, -65518, 8, 3, -65519, 8, 3, -65520, 8, 3, -65521, 8, 3, -65522, 8, 3, -65533, 5, 0, -65534, 5, 0, -65535, 5, 0, -65535, 4, 0, -65534, 4, 0, -65534, 3, 0, -65535, 3, 0, -65533, 4, 0, -65533, 3, 0, -65533, 2, 0, -65534, 2, 0, -65535, 2, 0, -65536, 2, 0, -65536, 3, 0, -65536, 4, 0, -65535, 6, 0, -65534, 6, 0, -65536, 5, 0, -1, 5, 0, -1, 4, 0, -65536, 6, 0, -65536, 7, 0, -65535, 7, 0, -65534, 7, 1, -65534, 8, 0, -65523, 7, 3, -65523, 8, 3, -65523, 9, 3, -65524, 9, 3, -65524, 10, 3, -65524, 12, 3, -65522, 9, 3, -65522, 10, 3, -65522, 11, 3, -65523, 12, 3, -65523, 13, 3, -65524, 13, 3, -65525, 14, 3, -65525, 13, 2, -65522, 12, 3, -65524, 11, 3, -65523, 11, 3, -65523, 10, 3, -65520, 9, 3, -65521, 13, 3, -65522, 14, 3, -65522, 15, 3, -65521, 12, 3, -65521, 10, 3, -65520, 10, 3, -65521, 11, 3, -65523, 14, 3, -65519, 9, 3, -65520, 11, 3, -65520, 12, 3, -65522, 13, 3, -65520, 13, 3, -65518, 10, 3, -65519, 11, 3, -65520, 14, 3, -65520, 15, 3, -65521, 15, 3, -65519, 10, 3, -65521, 9, 3, -65521, 14, 3, -65525, 6, 2, -65525, 7, 2, -65526, 8, 2, -65526, 9, 2, -65527, 10, 2, -65527, 11, 2, -65524, 6, 2, -65524, 8, 2, -65525, 9, 2, -65525, 10, 2, -65526, 11, 2, -65526, 12, 2, -65526, 13, 2, -65524, 7, 2, -65525, 8, 2, -65525, 11, 2, -65525, 12, 2, -65526, 10, 2, -65527, 12, 2, -65527, 13, 2, -65527, 9, 2, -65528, 9, 2, -65528, 10, 2, -65528, 11, 2, -65528, 12, 2, -65528, 13, 2, -65529, 11, 2, -65529, 9, 2, -65529, 10, 2, -65529, 12, 2, -65529, 8, 2, -65530, 11, 1, -65530, 10, 1, -65530, 9, 2, -65530, 8, 2, -65529, 13, 2, -65529, 14, 2, -65531, 9, 1, -65530, 12, 1, -65530, 13, 1, -65530, 14, 1, -65530, 15, 1, -65530, 16, 1, -65531, 14, 1, -65531, 12, 1, -65531, 11, 1, -65531, 10, 1, -65531, 13, 1, -65532, 12, 1, -65532, 10, 1, -65532, 8, 1, -65533, 7, 1, -65533, 9, 1, -65532, 11, 1, -65533, 10, 1, -65533, 8, 1, -65533, 11, 1, -65532, 9, 1, -65535, 8, 0, -65535, 9, 0, -65536, 8, 0, -1, 9, 0, -1, 10, 0, -1, 7, 0, -1, 6, 0, -2, 8, 0, -2, 9, 0, -2, 10, 0, -65535, 10, 0, -65535, 11, 0, -65536, 9, 0, -65536, 10, 0, -65536, 11, 0, -1, 8, 0, -65534, 9, 0, -65534, 10, 0, -65535, 12, 0, 65535, 8, 0, 0, 9, 0, 1, 9, 0, 1, 8, 0, 0, 8, 0, 2, 9, 0, 2, 8, 0, 1, 7, 0, 0, 7, 0, 65535, 7, 0, 65534, 8, 0, 65535, 9, 0, 0, 10, 0, 1, 10, 0, 1, 11, 0, 2, 11, 0, 2, 10, 0, 2, 7, 0, 1, 6, 0)
+}
+script = ExtResource("6_j7qx0")
+render_around = NodePath("../Vehicle")
+noise = SubResource("FastNoiseLite_2c2fy")
+tile_gradient_keys = Array[int]([1, 0, 2, 3])
+tile_gradient_values = Array[float]([-0.25, 0.2, 0.45, 1.0])
+resource_deposits = Array[PackedScene]([ExtResource("7_5lgi5"), ExtResource("8_marcq"), ExtResource("9_qf5aj"), ExtResource("10_kmswi")])
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="ResourceDeposits" type="Node3D" parent="SubViewport/World/Ground"]
+
+[node name="GroundEnemyTransform" type="Node3D" parent="SubViewport/World" node_paths=PackedStringArray("vehicle")]
+script = ExtResource("7_xpg5g")
+vehicle = NodePath("../Vehicle")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport/World"]
+environment = SubResource("Environment_caes1")
+
+[node name="UI" parent="." instance=ExtResource("9_7l2v1")]
+
+[node name="HurtSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_vkd5s")
+
+[connection signal="enemy_attacked_watchtower" from="SubViewport/World/EnemyManager" to="." method="_on_watchtower_attacked"]
+[connection signal="change_power" from="SubViewport/World/Vehicle" to="." method="_change_power"]
+[connection signal="chunk_distribution_updated" from="SubViewport/World/Ground" to="SubViewport/World/Vehicle/EnemySpawner" method="_on_current_chunk_tile_distribution_updated"]

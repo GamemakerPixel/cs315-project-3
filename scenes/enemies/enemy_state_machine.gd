@@ -5,7 +5,8 @@ enum State {
 	ON_GROUND,
 	MOUNTING_VEHICLE,
 	ON_VEHICLE,
-	EXPLODING,
+	ATTACKING,
+	DEFEATED,
 }
 
 const INITIAL_STATE = State.ON_GROUND
@@ -14,7 +15,8 @@ const INITIAL_STATE = State.ON_GROUND
 	State.ON_GROUND: $OnGround,
 	State.MOUNTING_VEHICLE: $MountingVehicle,
 	State.ON_VEHICLE: $OnVehicle,
-	State.EXPLODING: $Exploding,
+	State.ATTACKING: $Attacking,
+	State.DEFEATED: $Defeated,
 }
 
 var _enemy: Enemy

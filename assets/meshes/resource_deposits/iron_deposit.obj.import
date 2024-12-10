@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c18mshfnfoau1"
+path="res://.godot/imported/iron_deposit.obj-f8cb754d1ab4d730e9af6b90cc45a22d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/iron_deposit.obj-f8cb754d1ab4d730e9af6b90cc45a22d.mesh"]
+
+source_file="res://assets/meshes/resource_deposits/iron_deposit.obj"
+dest_files=["res://.godot/imported/iron_deposit.obj-f8cb754d1ab4d730e9af6b90cc45a22d.mesh", "res://.godot/imported/iron_deposit.obj-f8cb754d1ab4d730e9af6b90cc45a22d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b0eyybifhmfy0"
+path="res://.godot/imported/lumber_deposit.obj-fd54e7fd8b00e456ec7e111193b03993.mesh"
+
+[deps]
+
+files=["res://.godot/imported/lumber_deposit.obj-fd54e7fd8b00e456ec7e111193b03993.mesh"]
+
+source_file="res://assets/meshes/resource_deposits/lumber_deposit.obj"
+dest_files=["res://.godot/imported/lumber_deposit.obj-fd54e7fd8b00e456ec7e111193b03993.mesh", "res://.godot/imported/lumber_deposit.obj-fd54e7fd8b00e456ec7e111193b03993.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

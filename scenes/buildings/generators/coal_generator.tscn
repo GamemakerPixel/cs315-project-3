@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=3 uid="uid://cycxrh6a05ydp"]
+
+[ext_resource type="ArrayMesh" uid="uid://kx0iufvu3om8" path="res://assets/meshes/buildings/generators/coal_generator.obj" id="1_t5s8t"]
+[ext_resource type="Script" path="res://scenes/buildings/generators/generator.gd" id="2_kcdmb"]
+[ext_resource type="Script" path="res://scenes/buildings/generators/generator_state_machine.gd" id="3_1upg0"]
+[ext_resource type="Script" path="res://scenes/buildings/generators/states/active.gd" id="4_18yb7"]
+[ext_resource type="Script" path="res://scenes/buildings/generators/states/inactive.gd" id="5_e8h1y"]
+[ext_resource type="AudioStream" uid="uid://b3e80fusyme1e" path="res://assets/sound/powerup.wav" id="6_nx20a"]
+[ext_resource type="AudioStream" uid="uid://c7hhqrh4vsvh" path="res://assets/sound/powerdown.wav" id="7_dusnh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u48p8"]
+albedo_color = Color(0.17, 0.17, 0.17, 1)
+roughness = 0.5
+
+[node name="CoalGenerator" type="MeshInstance3D"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
+mesh = ExtResource("1_t5s8t")
+surface_material_override/0 = SubResource("StandardMaterial3D_u48p8")
+script = ExtResource("2_kcdmb")
+power_provided = 50
+consumable_used = 2
+minimum_amount = 0.2
+minimum_duration = 6.0
+maximum_duration = 30.0
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("3_1upg0")
+
+[node name="Active" type="Node" parent="States"]
+script = ExtResource("4_18yb7")
+
+[node name="Inactive" type="Node" parent="States"]
+script = ExtResource("5_e8h1y")
+
+[node name="PowerOn" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_nx20a")
+
+[node name="PowerOff" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_dusnh")

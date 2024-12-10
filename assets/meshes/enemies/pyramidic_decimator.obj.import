@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bnxihvlxy4fdq"
+path="res://.godot/imported/pyramidic_decimator.obj-557f5d4960af7836f977229e70c1fc52.mesh"
+
+[deps]
+
+files=["res://.godot/imported/pyramidic_decimator.obj-557f5d4960af7836f977229e70c1fc52.mesh"]
+
+source_file="res://assets/meshes/enemies/pyramidic_decimator.obj"
+dest_files=["res://.godot/imported/pyramidic_decimator.obj-557f5d4960af7836f977229e70c1fc52.mesh", "res://.godot/imported/pyramidic_decimator.obj-557f5d4960af7836f977229e70c1fc52.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

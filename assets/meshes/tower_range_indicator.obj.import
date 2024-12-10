@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://brxiobxaqedbo"
+path="res://.godot/imported/tower_range_indicator.obj-3f1614f9af2878302c45468045014639.mesh"
+
+[deps]
+
+files=["res://.godot/imported/tower_range_indicator.obj-3f1614f9af2878302c45468045014639.mesh"]
+
+source_file="res://assets/meshes/tower_range_indicator.obj"
+dest_files=["res://.godot/imported/tower_range_indicator.obj-3f1614f9af2878302c45468045014639.mesh", "res://.godot/imported/tower_range_indicator.obj-3f1614f9af2878302c45468045014639.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

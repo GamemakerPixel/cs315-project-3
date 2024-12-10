@@ -1,0 +1,213 @@
+[gd_scene load_steps=16 format=3 uid="uid://c1iftwdava07c"]
+
+[ext_resource type="Shader" path="res://resources/shaders/pixel_art_post_processing.gdshader" id="1_3tgmx"]
+[ext_resource type="Theme" uid="uid://cgdlk7toi888" path="res://resources/themes/game_ui.tres" id="1_f2wod"]
+[ext_resource type="Script" path="res://scenes/vehicle/screen_space_shader_control.gd" id="2_on8td"]
+[ext_resource type="Material" uid="uid://de5358rmw3ona" path="res://resources/materials/grass.tres" id="3_sh3vu"]
+[ext_resource type="Script" path="res://scenes/maps/ground.gd" id="4_rnus4"]
+[ext_resource type="MeshLibrary" uid="uid://nrgg3d8fprc6" path="res://resources/mesh_libraries/vehicle_platforms.tres" id="5_3m5r6"]
+[ext_resource type="Script" path="res://scenes/menus/main_menu_buttons.gd" id="7_776ql"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sej1v"]
+render_priority = 0
+shader = ExtResource("1_3tgmx")
+shader_parameter/depth_outline_threshold = 0.05
+shader_parameter/normal_outline_threshold = 0.6
+shader_parameter/depth_outline_value_scale = 0.25
+shader_parameter/normal_outline_value_scale = 1.5
+shader_parameter/normal_edge_bias = Vector3(1, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_6dea6"]
+material = SubResource("ShaderMaterial_sej1v")
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="Animation" id="Animation_as8w6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5u8o1"]
+resource_name = "circle"
+length = 60.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 60),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v7wro"]
+_data = {
+"RESET": SubResource("Animation_as8w6"),
+"circle": SubResource("Animation_5u8o1")
+}
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_16qya"]
+material = ExtResource("3_sh3vu")
+
+[sub_resource type="MeshLibrary" id="MeshLibrary_3gpf5"]
+item/0/name = "Grass"
+item/0/mesh = SubResource("PlaneMesh_16qya")
+item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+item/0/shapes = []
+item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/navigation_layers = 1
+
+[sub_resource type="Environment" id="Environment_kd4gg"]
+ambient_light_source = 2
+ambient_light_color = Color(0.4, 0.4, 0.4, 1)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_f2wod")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="BG" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(576, 324)
+render_target_update_mode = 4
+
+[node name="Background" type="Node3D" parent="SubViewportContainer/BG"]
+
+[node name="CameraCenter" type="Node3D" parent="SubViewportContainer/BG/Background"]
+
+[node name="Camera3D2" type="Camera3D" parent="SubViewportContainer/BG/Background/CameraCenter"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 20, 20)
+keep_aspect = 0
+projection = 1
+current = true
+size = 49.497
+
+[node name="ScreenSpaceShader" type="MeshInstance3D" parent="SubViewportContainer/BG/Background/CameraCenter/Camera3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, -14.1421)
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_6dea6")
+skeleton = NodePath("../../../..")
+script = ExtResource("2_on8td")
+enable_in_editor = true
+
+[node name="CameraAnim" type="AnimationPlayer" parent="SubViewportContainer/BG/Background/CameraCenter"]
+root_node = NodePath("../Camera3D2")
+libraries = {
+"": SubResource("AnimationLibrary_v7wro")
+}
+autoplay = "circle"
+
+[node name="Ground" type="GridMap" parent="SubViewportContainer/BG/Background"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 28.8401)
+mesh_library = SubResource("MeshLibrary_3gpf5")
+data = {
+"cells": PackedInt32Array(65535, 0, 0, 0, 0, 0, 0, 65535, 0, 1, 65535, 0, 1, 0, 0, 1, 65534, 0, 1, 65533, 0, 0, 65533, 0, 0, 65534, 0, 65535, 65534, 0, 65535, 65535, 0, 65535, 65533, 0, 65534, 65534, 0, 65534, 65535, 0, 65534, 0, 0, 65534, 65533, 0, 65534, 1, 0, 65535, 1, 0, 0, 1, 0, 1, 1, 0, 2, 65533, 0, 2, 65534, 0, 2, 65535, 0, 2, 0, 0, 2, 1, 0, 2, 2, 0, 1, 2, 0, 0, 2, 0, 65535, 2, 0, 65534, 2, 0, 65533, 2, 0, 65533, 1, 0, 65533, 0, 0, 65533, 65535, 0, 65533, 65534, 0, 65533, 65533, 0, 65532, 3, 0, 65531, 3, 0, 65533, 4, 0, 65534, 4, 0, 65535, 4, 0, 0, 4, 0, 1, 4, 0, 2, 4, 0, 4, 3, 0, 3, 2, 0, 3, 1, 0, 3, 0, 0, 4, 0, 0, 4, 1, 0, 4, 2, 0, 4, 65535, 0, 4, 65534, 0, 4, 65533, 0, 2, 65531, 0, 1, 65531, 0, 0, 65531, 0, 65535, 65531, 0, 65534, 65531, 0, 65533, 65531, 0, 65532, 65531, 0, 65531, 65531, 0, 65531, 65532, 0, 65532, 65532, 0, 65532, 65533, 0, 65532, 65534, 0, 65532, 65535, 0, 65532, 0, 0, 65532, 1, 0, 65533, 3, 0, 65532, 2, 0, 65531, 2, 0, 65531, 1, 0, 65531, 0, 0, 65531, 65533, 0, 65531, 65534, 0, 65531, 65535, 0, 65534, 65532, 0, 65535, 65532, 0, 0, 65532, 0, 1, 65532, 0, 2, 65532, 0, 3, 65532, 0, 3, 65533, 0, 3, 65534, 0, 3, 3, 0, 2, 3, 0, 1, 3, 0, 0, 3, 0, 65535, 3, 0, 65534, 3, 0, 3, 65535, 0, 65533, 65532, 0, 7, 0, 0, 7, 65535, 0, 6, 65533, 0, 5, 1, 0, 6, 1, 0, 5, 0, 0, 6, 65535, 0, 5, 65535, 0, 5, 65534, 0, 6, 65534, 0, 5, 65533, 0, 6, 0, 0, 2, 5, 0, 1, 5, 0, 0, 5, 0, 65535, 5, 0, 65534, 5, 0, 65533, 5, 0, 2, 6, 0, 1, 6, 0, 0, 6, 0, 65535, 6, 1441792, 65534, 6, 0, 65533, 6, 0, 0, 7, 0, 1, 7, 0, 65535, 7, 0, 65534, 7, 0, 65530, 2, 0, 65530, 1, 0, 65530, 0, 0, 65530, 65535, 0, 65530, 65534, 0, 65529, 65534, 0, 65530, 65533, 0, 65529, 65533, 0, 65529, 65535, 0, 65529, 0, 0, 65529, 1, 0, 65529, 2, 0, 65528, 1, 0, 65528, 0, 0, 65528, 65535, 0, 65528, 65534, 0, 65533, 65530, 0, 65534, 65530, 0, 65535, 65530, 0, 0, 65530, 0, 1, 65530, 0, 2, 65530, 0, 0, 65529, 0, 65535, 65529, 0, 65534, 65529, 0, 65533, 65529, 0, 65535, 65528, 0, 0, 65528, 0, 65534, 65528, 0, 1, 65528, 0, 1, 65529, 0, 2, 65529, 0, 4, 65532, 0, 7, 65534, 0, 65532, 4, 0, 65531, 4, 0, 3, 65531, 0, 4, 65531, 0, 3, 4, 0, 4, 4, 0, 65535, 10, 0, 0, 10, 0, 2, 10, 0, 4, 10, 0, 6, 10, 0, 8, 10, 0, 65533, 10, 0, 65531, 10, 0, 65529, 10, 0, 65527, 10, 0, 65535, 65526, 0, 0, 65526, 0, 65535, 65524, 0, 0, 65524, 0, 65535, 65522, 0, 0, 65522, 0, 65535, 65520, 0, 0, 65520, 0, 65535, 65518, 0, 0, 65518, 0, 65535, 65516, 0, 0, 65516, 0, 65535, 65514, 0, 0, 65514, 0, 65535, 65512, 0, 0, 65512, 0, 65535, 65510, 0, 0, 65510, 0)
+}
+script = ExtResource("4_rnus4")
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Sun" type="DirectionalLight3D" parent="SubViewportContainer/BG/Background"]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, 0, 0, 0)
+shadow_enabled = true
+shadow_blur = 0.801
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.015
+directional_shadow_split_2 = 0.12
+directional_shadow_split_3 = 0.172
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/BG/Background"]
+environment = SubResource("Environment_kd4gg")
+
+[node name="GridMap" type="GridMap" parent="SubViewportContainer/BG/Background"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, -0.5, 0)
+mesh_library = ExtResource("5_3m5r6")
+cell_size = Vector3(2, 1, 2)
+collision_layer = 2
+bake_navigation = true
+data = {
+"cells": PackedInt32Array(0, 0, 0, 65535, 65535, 0, 0, 65535, 0, 65535, 0, 0, 0, 1, 0, 2, 65535, 0, 2, 0, 0, 2, 1, 0, 2, 2, 0, 0, 2, 0, 65535, 2, 0, 65535, 3, 0, 65534, 3, 0, 65534, 65535, 0, 65533, 65535, 0, 65533, 0, 0, 65532, 0, 0, 65532, 1, 0, 0, 65533, 0, 65535, 65533, 0, 65534, 65533, 0, 65533, 65533, 0, 65534, 0, 0, 65534, 1, 0, 65535, 1, 0, 1, 65532, 0, 3, 65534, 0, 65533, 65534, 0, 1, 2, 0, 65532, 2, 0, 65533, 3, 0, 65532, 3, 0, 2, 3, 0, 2, 4, 0, 2, 5, 0, 1, 5, 0, 0, 5, 0, 65535, 5, 0, 65532, 65533, 0, 65531, 65533, 0, 65530, 65533, 0, 65530, 65534, 0, 65530, 65535, 0, 65530, 0, 0, 0, 65532, 0, 3, 65535, 0, 2, 65532, 0, 2, 65533, 0, 3, 65533, 0, 0, 65531, 0, 65535, 65531, 0, 65534, 65531, 0, 65533, 65531, 0, 65532, 65531, 0, 4, 65535, 0, 4, 0, 0, 4, 1, 0, 4, 2, 0, 4, 3, 0)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.13, 0.13, 0.13, 0.631373)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 250
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 250
+theme_override_constants/margin_bottom = 50
+
+[node name="Vbox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Margin/Vbox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Guns on Wheels"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Margin/Vbox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 32
+alignment = 1
+script = ExtResource("7_776ql")
+game_scene = "res://scenes/maps/map.tscn"
+
+[node name="Play" type="Button" parent="Margin/Vbox/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Play"
+
+[node name="Quit" type="Button" parent="Margin/Vbox/Buttons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Quit"
+
+[connection signal="pressed" from="Margin/Vbox/Buttons/Play" to="Margin/Vbox/Buttons" method="_on_play"]
+[connection signal="pressed" from="Margin/Vbox/Buttons/Quit" to="Margin/Vbox/Buttons" method="_on_quit"]

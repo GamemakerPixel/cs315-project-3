@@ -1,60 +1,111 @@
 {
 	"simple_turret": {
 		"name": "Simple Turret",
-		"mesh": "res://assets/meshes/buildings/placeholder.obj",
+		"mesh": "res://assets/meshes/buildings/towers/simple_turret.obj",
 		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "tower"
+		"category": "tower",
+		"tower": {
+			"range": 2.5
+		},
+		"cost": {
+			"lumber": 5
+		}
 	},
 	"explosives": {
 		"name": "Explosives",
-		"mesh": "res://assets/meshes/buildings/placeholder.obj",
-		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "tower"
+		"mesh": "res://assets/meshes/buildings/towers/explosives_tower.obj",
+		"scene": "res://scenes/buildings/towers/explosives.tscn",
+		"category": "tower",
+		"tower": {
+			"range": 1.5
+		},
+		"cost": {
+			"lumber": 10,
+			"coal": 5
+		}
 	},
 	"sniper": {
 		"name": "Sniper",
-		"mesh": "res://assets/meshes/buildings/placeholder.obj",
-		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "tower"
+		"mesh": "res://assets/meshes/buildings/towers/sniper_tower.obj",
+		"scene": "res://scenes/buildings/towers/sniper_tower.tscn",
+		"category": "tower",
+		"tower": {
+			"range": 5
+		},
+		"cost": {
+			"lumber": 20,
+			"iron": 3
+		}
 	},
 	
 	
-	"coal_generator": {
-		"name": "Coal Generator",
-		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
-		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "generator"
-	},
 	"solar_panel": {
 		"name": "Solar Panel",
-		"mesh": "res://assets/meshes/buildings/metal_platform.obj",
-		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "generator"
+		"mesh": "res://assets/meshes/buildings/generators/solar_panel.obj",
+		"scene": "res://scenes/buildings/generators/solar_panel.tscn",
+		"category": "generator",
+		"cost": {
+			"lumber": 5
+		}
 	},
 	"wind_turbine": {
 		"name": "Wind Turbine",
-		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
-		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "generator"
+		"mesh": "res://assets/meshes/buildings/generators/wind_turbine.obj",
+		"scene": "res://scenes/buildings/generators/wind_turbine.tscn",
+		"category": "generator",
+		"cost": {
+			"lumber": 20,
+			"iron": 1
+		}
+	},
+	"coal_generator": {
+		"name": "Coal Generator",
+		"mesh": "res://assets/meshes/buildings/generators/coal_generator.obj",
+		"scene": "res://scenes/buildings/generators/coal_generator.tscn",
+		"category": "generator",
+		"cost": {
+			"lumber": 5,
+			"coal": 25
+		}
 	},
 	
 	
-	"coal_excavator": {
-		"name": "Coal Excavator",
-		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
-		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "gatherer"
-	},
 	"lumber_harvester": {
 		"name": "Lumber Harvester",
-		"mesh": "res://assets/meshes/buildings/metal_platform.obj",
-		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "gatherer"
+		"mesh": "res://assets/meshes/buildings/gatherers/lumber_harvester.obj",
+		"scene": "res://scenes/buildings/gatherers/lumber_harvester.tscn",
+		"category": "gatherer",
+		"cost": {
+			"lumber": 5
+		}
 	},
-	"iron_excavator": {
-		"name": "Iron Excavator",
-		"mesh": "res://assets/meshes/buildings/delete_indicator.obj",
-		"scene": "res://scenes/buildings/towers/simple_turret.tscn",
-		"category": "gatherer"
+	"coal_excavator": {
+		"name": "Coal Excavator",
+		"mesh": "res://assets/meshes/buildings/gatherers/coal_excavator.obj",
+		"scene": "res://scenes/buildings/gatherers/coal_excavator.tscn",
+		"category": "gatherer",
+		"cost": {
+			"lumber": 30
+		}
 	},
+	"iron_refinery": {
+		"name": "Iron Refinery",
+		"mesh": "res://assets/meshes/buildings/gatherers/iron_refinery.obj",
+		"scene": "res://scenes/buildings/gatherers/iron_refinery.tscn",
+		"category": "gatherer",
+		"cost": {
+			"lumber": 20,
+			"coal": 10
+		}
+	},
+	"gold_refinery": {
+		"name": "Gold Refinery",
+		"mesh": "res://assets/meshes/buildings/gatherers/iron_refinery.obj",
+		"scene": "res://scenes/buildings/gatherers/gold_refinery.tscn",
+		"category": "gatherer",
+		"cost": {
+			"iron": 5,
+			"coal": 20
+		}
+	}
 }

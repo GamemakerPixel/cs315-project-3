@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://cmc7x0an7u1fu"]
+
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/gatherer.gd" id="1_loxwv"]
+[ext_resource type="ArrayMesh" uid="uid://pk8ip64bep85" path="res://assets/meshes/buildings/gatherers/iron_refinery.obj" id="2_77kiv"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/gatherer_state_machine.gd" id="3_k47rc"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/active.gd" id="4_enik6"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/waiting.gd" id="5_plm5q"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/inactive.gd" id="6_1gy1c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7fqve"]
+albedo_color = Color(0.89, 0.741222, 0.3649, 1)
+metallic = 0.6
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uh8g2"]
+albedo_color = Color(1, 0.451167, 0.11, 1)
+emission_enabled = true
+emission = Color(1, 0.623833, 0.39, 1)
+emission_energy_multiplier = 1.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dad6j"]
+size = Vector3(2, 1, 2)
+
+[node name="GoldRefinery" type="Area3D" node_paths=PackedStringArray("detection_area")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+script = ExtResource("1_loxwv")
+consumable = 5
+detection_area = NodePath(".")
+charge_energy = 80.0
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_77kiv")
+surface_material_override/0 = SubResource("StandardMaterial3D_7fqve")
+surface_material_override/1 = SubResource("StandardMaterial3D_uh8g2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_dad6j")
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("3_k47rc")
+
+[node name="Active" type="Node" parent="States"]
+script = ExtResource("4_enik6")
+
+[node name="Waiting" type="Node" parent="States"]
+script = ExtResource("5_plm5q")
+
+[node name="Inactive" type="Node" parent="States"]
+script = ExtResource("6_1gy1c")

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://xid04oifevg4"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0q5y2"]
+size = Vector2(0.667, 0.667)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_arggd"]
+cell_size = 0.33
+cell_height = 0.33
+agent_radius = 0.0
+
+[node name="VehiclePlatformsNav" type="Node3D"]
+
+[node name="ThirdTile" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+mesh = SubResource("PlaneMesh_0q5y2")
+
+[node name="Navigation" type="NavigationRegion3D" parent="ThirdTile"]
+navigation_mesh = SubResource("NavigationMesh_arggd")
+
+[node name="ThirdTile" type="MeshInstance3D" parent="ThirdTile/Navigation"]
+visible = false
+mesh = SubResource("PlaneMesh_0q5y2")

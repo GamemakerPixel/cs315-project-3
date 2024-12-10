@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bg3jvy30qh6ql"
+path="res://.godot/imported/coal_excavator.obj-0218e3a4998de198309834c7c741a0d9.mesh"
+
+[deps]
+
+files=["res://.godot/imported/coal_excavator.obj-0218e3a4998de198309834c7c741a0d9.mesh"]
+
+source_file="res://assets/meshes/buildings/gatherers/coal_excavator.obj"
+dest_files=["res://.godot/imported/coal_excavator.obj-0218e3a4998de198309834c7c741a0d9.mesh", "res://.godot/imported/coal_excavator.obj-0218e3a4998de198309834c7c741a0d9.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

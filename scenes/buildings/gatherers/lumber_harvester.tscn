@@ -1,0 +1,53 @@
+[gd_scene load_steps=11 format=3 uid="uid://cs5r84cv1r04w"]
+
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/gatherer.gd" id="1_wkq3q"]
+[ext_resource type="ArrayMesh" uid="uid://piavk10okly3" path="res://assets/meshes/buildings/gatherers/lumber_harvester.obj" id="2_if82p"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/gatherer_state_machine.gd" id="3_0shs8"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/active.gd" id="4_mk7ek"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/waiting.gd" id="5_yt8fp"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/inactive.gd" id="6_uird2"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2g8bl"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mmp6h"]
+as_normal_map = true
+bump_strength = 3.0
+noise = SubResource("FastNoiseLite_2g8bl")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xodi1"]
+albedo_color = Color(0.21, 0.162995, 0.0441, 1)
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_mmp6h")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dad6j"]
+size = Vector3(2, 1, 2)
+
+[node name="LumberHarvester" type="Area3D" node_paths=PackedStringArray("detection_area")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+script = ExtResource("1_wkq3q")
+consumable = 1
+detection_area = NodePath(".")
+charge_energy = 20.0
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_if82p")
+surface_material_override/0 = SubResource("StandardMaterial3D_xodi1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_dad6j")
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("3_0shs8")
+
+[node name="Active" type="Node" parent="States"]
+script = ExtResource("4_mk7ek")
+
+[node name="Waiting" type="Node" parent="States"]
+script = ExtResource("5_yt8fp")
+
+[node name="Inactive" type="Node" parent="States"]
+script = ExtResource("6_uird2")

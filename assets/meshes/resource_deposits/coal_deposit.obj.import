@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dn5rv1bwtmtnt"
+path="res://.godot/imported/coal_deposit.obj-855b253d95afdaf495673c2b131a9b87.mesh"
+
+[deps]
+
+files=["res://.godot/imported/coal_deposit.obj-855b253d95afdaf495673c2b131a9b87.mesh"]
+
+source_file="res://assets/meshes/resource_deposits/coal_deposit.obj"
+dest_files=["res://.godot/imported/coal_deposit.obj-855b253d95afdaf495673c2b131a9b87.mesh", "res://.godot/imported/coal_deposit.obj-855b253d95afdaf495673c2b131a9b87.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

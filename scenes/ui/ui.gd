@@ -3,15 +3,30 @@ extends CanvasLayer
 signal building_selected(building: BuildingData.Building)
 
 const _BUILDING_BUTTON_SCENE = preload("res://scenes/ui/building_button.tscn")
+const _RESOURCE_ENTRY_SCENE = preload("res://scenes/ui/resource_entry.tscn")
+const _HEALTH_ANIM_SPEED = 0.1
+const _TRACKED_RESOURCES = [
+	ConsumablePool.Consumable.LUMBER,
+	ConsumablePool.Consumable.COAL,
+	ConsumablePool.Consumable.IRON,
+]
+
+@export var health_progress: ProgressBar
 
 @onready var _category_nodes: Dictionary = {
-	"action": $Margin/HBox/Buildings/Actions/Scroll/Options,
-	"tower": $Margin/HBox/Buildings/Towers/Scroll/Options,
-	"generator": $Margin/HBox/Buildings/Generators/Scroll/Options,
-	"gatherer": $Margin/HBox/Buildings/Gatherers/Scroll/Options,
+	"resources": $Margin/HBox/Build/Buildings/Resources/Scroll/Entries,
+	"tower": $Margin/HBox/Build/Buildings/Towers/Scroll/Options,
+	"generator": $Margin/HBox/Build/Buildings/Generators/Scroll/Options,
+	"gatherer": $Margin/HBox/Build/Buildings/Gatherers/Scroll/Options,
 }
 
+# Set by Map
+var consumable_pool: ConsumablePool : set = _on_consumable_pool_set
+
 var _building_ui_visible := false : set = _set_building_ui_visible
+# Consumable: func(amount) that updates UI
+var _count_updaters: Dictionary
+
 
 func _ready() -> void:
 	_set_initial_state()
@@ -19,9 +34,22 @@ func _ready() -> void:
 	_add_building_buttons()
 
 
+func show_game_over() -> void:
+	$Margin.hide()
+	$GameOver.show()
+
+
+func show_win() -> void:
+	$Margin.hide()
+	$Win.show()
+
+
 func _set_initial_state() -> void:
-	$Margin/HBox/Buildings/Actions.show()
-	$Margin/HBox/Buildings.hide()
+	$Margin/HBox/Build/Buildings/Resources.show()
+	$Margin/HBox/Build/Buildings.hide()
+	$Margin.show()
+	$GameOver.hide()
+	$Win.hide()
 
 
 func _clear_placeholders() -> void:
@@ -39,9 +67,18 @@ func _add_building_buttons() -> void:
 		_category_nodes[category].add_child(button)
 
 
+func _add_resource_entries() -> void:
+	for consumable in _TRACKED_RESOURCES:
+		var initial_count := consumable_pool.query_amount(consumable)
+		var entry = _RESOURCE_ENTRY_SCENE.instantiate()
+		entry.set_initial_values(consumable, initial_count)
+		_count_updaters[consumable] = entry.set_count
+		_category_nodes["resources"].add_child(entry)
+
+
 func _set_building_ui_visible(new_building_ui_visible: bool) -> void:
 	_building_ui_visible = new_building_ui_visible
-	$Margin/HBox/Buildings.visible = new_building_ui_visible
+	$Margin/HBox/Build/Buildings.visible = new_building_ui_visible
 
 
 func _on_visibility_button_pressed() -> void:
@@ -52,3 +89,31 @@ func _on_visibility_button_pressed() -> void:
 func _on_building_selected(building: BuildingData.Building) -> void:
 	building_selected.emit(building)
 	_building_ui_visible = false
+
+
+func _on_resource_count_updated(
+	consumable: ConsumablePool.Consumable,
+	amount: float
+) -> void:
+	if consumable in _count_updaters:
+		_count_updaters[consumable].call(amount)
+
+
+func _on_consumable_pool_set(pool: ConsumablePool) -> void:
+	consumable_pool = pool
+	_add_resource_entries()
+	consumable_pool.subscribe_to_all_changes(_on_resource_count_updated)
+
+
+func set_max_health(health: int) -> void:
+	health_progress.max_value = health
+	health_progress.value = health
+
+
+func set_health(health: int) -> void:
+	var tween := get_tree().create_tween()
+	tween.tween_property(health_progress, "value", health, _HEALTH_ANIM_SPEED)
+
+
+func set_power(power: float) -> void:
+	$Margin/HBox/Stats/VBox/EnergyIndicator.power = power

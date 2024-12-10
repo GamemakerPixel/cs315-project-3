@@ -1,4 +1,4 @@
-extends Node3D
+extends MeshInstance3D
 
 const PLATFORM_Y = 0.0
 const BUILDING_Y = 1.0
@@ -21,7 +21,7 @@ func _process(_delta: float) -> void:
 	if not enabled:
 		return
 	var mouse_target = mouse_detector.get_3d_mouse_position(_y_level).rotated(Vector3.UP, rotation.y)
-	position = _round_local(mouse_target).rotated(Vector3.UP, -rotation.y)# + gridmap.position
+	position = _round_local(mouse_target).rotated(Vector3.UP, -rotation.y) + gridmap.position
 
 
 func get_current_tile_coordinates() -> Vector3i:
@@ -32,8 +32,23 @@ func get_current_tile_coordinates() -> Vector3i:
 func get_local_coordinates() -> Vector3:
 	return gridmap.map_to_local(get_current_tile_coordinates()).rotated(
 		Vector3.UP, rotation.y
-	)
+	) + gridmap.position
+
+
+func load_building(building: BuildingData.Building) -> void:
+	mesh = BuildingData.get_building_mesh(building)
+	if not BuildingData.get_building_category(building) == "tower":
+		$RangeIndicator.hide()
+		return
 	
+	var tower_stats: BuildingData.TowerStats = BuildingData.get_tower_stats(building)
+	$RangeIndicator.scale = Vector3(
+		tower_stats.attack_range,
+		1.0,
+		tower_stats.attack_range
+	)
+	$RangeIndicator.show()
+
 
 
 func _round_local(true_position: Vector3) -> Vector3:

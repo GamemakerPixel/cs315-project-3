@@ -3,8 +3,22 @@
 [ext_resource type="Script" path="res://scenes/ui/building_button.gd" id="1_7t2ag"]
 [ext_resource type="Theme" uid="uid://cgdlk7toi888" path="res://resources/themes/game_ui.tres" id="1_usnjk"]
 
-[node name="0" type="Button"]
-custom_minimum_size = Vector2(0, 64)
+[node name="BuildingEntry" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 64.0
+grow_horizontal = 2
+script = ExtResource("1_7t2ag")
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(250, 64)
+layout_mode = 2
 theme = ExtResource("1_usnjk")
 text = "Building Name"
-script = ExtResource("1_7t2ag")
+
+[node name="Cost" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Costs: X RES, X RES"
+vertical_alignment = 1
+autowrap_mode = 2

@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://c75d7wohvqj4f"]
+
+[ext_resource type="ArrayMesh" uid="uid://bg3jvy30qh6ql" path="res://assets/meshes/buildings/gatherers/coal_excavator.obj" id="1_44kcf"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/gatherer.gd" id="2_5ubie"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/gatherer_state_machine.gd" id="3_gbc2i"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/active.gd" id="4_gofk0"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/inactive.gd" id="5_4oyn0"]
+[ext_resource type="Script" path="res://scenes/buildings/gatherers/states/waiting.gd" id="5_8kgrb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ncnsx"]
+albedo_color = Color(0.23, 0.23, 0.23, 1)
+roughness = 0.35
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dad6j"]
+size = Vector3(2, 1, 2)
+
+[node name="CoalExcavator" type="Area3D" node_paths=PackedStringArray("detection_area")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+script = ExtResource("2_5ubie")
+detection_area = NodePath(".")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_44kcf")
+surface_material_override/0 = SubResource("StandardMaterial3D_ncnsx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_dad6j")
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("3_gbc2i")
+
+[node name="Active" type="Node" parent="States"]
+script = ExtResource("4_gofk0")
+
+[node name="Waiting" type="Node" parent="States"]
+script = ExtResource("5_8kgrb")
+
+[node name="Inactive" type="Node" parent="States"]
+script = ExtResource("5_4oyn0")

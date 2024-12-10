@@ -1,0 +1,37 @@
+[gd_scene load_steps=9 format=3 uid="uid://bna86afm06203"]
+
+[ext_resource type="ArrayMesh" uid="uid://bpa1ox5xt5q2i" path="res://assets/meshes/buildings/generators/wind_turbine.obj" id="1_kmuao"]
+[ext_resource type="Script" path="res://scenes/buildings/generators/generator.gd" id="2_erucb"]
+[ext_resource type="Script" path="res://scenes/buildings/generators/generator_state_machine.gd" id="3_lbf43"]
+[ext_resource type="Script" path="res://scenes/buildings/generators/states/active.gd" id="4_ovx6i"]
+[ext_resource type="Script" path="res://scenes/buildings/generators/states/inactive.gd" id="5_yjckj"]
+[ext_resource type="AudioStream" uid="uid://b3e80fusyme1e" path="res://assets/sound/powerup.wav" id="6_tp6p1"]
+[ext_resource type="AudioStream" uid="uid://c7hhqrh4vsvh" path="res://assets/sound/powerdown.wav" id="7_g1crs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h3scg"]
+albedo_color = Color(0.804743, 0.804743, 0.804743, 1)
+roughness = 0.42
+
+[node name="WindTurbine" type="MeshInstance3D"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
+mesh = ExtResource("1_kmuao")
+surface_material_override/0 = SubResource("StandardMaterial3D_h3scg")
+script = ExtResource("2_erucb")
+power_provided = 15
+consumable_used = 4
+minimum_amount = 1.0
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("3_lbf43")
+
+[node name="Active" type="Node" parent="States"]
+script = ExtResource("4_ovx6i")
+
+[node name="Inactive" type="Node" parent="States"]
+script = ExtResource("5_yjckj")
+
+[node name="PowerOn" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_tp6p1")
+
+[node name="PowerOff" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_g1crs")

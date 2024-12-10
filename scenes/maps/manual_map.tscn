@@ -1,0 +1,70 @@
+[gd_scene load_steps=9 format=3 uid="uid://cegrpjy7r7leg"]
+
+[ext_resource type="Script" path="res://scenes/maps/map.gd" id="1_fawh7"]
+[ext_resource type="Script" path="res://scenes/maps/enemy_manager.gd" id="2_pogeu"]
+[ext_resource type="PackedScene" uid="uid://boqwelsica5mm" path="res://scenes/vehicle/vehicle.tscn" id="3_ylaxb"]
+[ext_resource type="Script" path="res://scenes/maps/enemy_transform.gd" id="4_6bm00"]
+[ext_resource type="MeshLibrary" uid="uid://cr6hs0bdh38a4" path="res://resources/mesh_libraries/ground.tres" id="5_epknc"]
+[ext_resource type="Script" path="res://scenes/maps/ground_enemy_transform.gd" id="7_r0sb8"]
+[ext_resource type="PackedScene" uid="uid://bnavhwlfl3mdu" path="res://scenes/ui/ui.tscn" id="9_2ux7c"]
+
+[sub_resource type="Environment" id="Environment_caes1"]
+ambient_light_source = 2
+ambient_light_color = Color(0.4, 0.4, 0.4, 1)
+
+[node name="TestMap" type="SubViewportContainer" node_paths=PackedStringArray("vehicle")]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+script = ExtResource("1_fawh7")
+vehicle = NodePath("SubViewport/World/Vehicle")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(576, 324)
+render_target_update_mode = 4
+
+[node name="World" type="Node3D" parent="SubViewport"]
+
+[node name="EnemyManager" type="Node" parent="SubViewport/World" node_paths=PackedStringArray("enemy_transforms")]
+script = ExtResource("2_pogeu")
+enemy_transforms = [NodePath("../GroundEnemyTransform"), NodePath("../Vehicle/VehicleEnemyTransform")]
+
+[node name="Vehicle" parent="SubViewport/World" instance=ExtResource("3_ylaxb")]
+
+[node name="VehicleEnemyTransform" type="Node3D" parent="SubViewport/World/Vehicle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.414)
+script = ExtResource("4_6bm00")
+
+[node name="Sun" type="DirectionalLight3D" parent="SubViewport/World"]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, 0, 0, 0)
+shadow_enabled = true
+shadow_blur = 0.801
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.015
+directional_shadow_split_2 = 0.12
+directional_shadow_split_3 = 0.172
+
+[node name="Ground" type="GridMap" parent="SubViewport/World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh_library = ExtResource("5_epknc")
+metadata/_editor_floor_ = Vector3(0, -1, 0)
+
+[node name="GroundEnemyTransform" type="Node3D" parent="SubViewport/World" node_paths=PackedStringArray("vehicle")]
+script = ExtResource("7_r0sb8")
+vehicle = NodePath("../Vehicle")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport/World"]
+environment = SubResource("Environment_caes1")
+
+[node name="ResourceDeposits" type="Node3D" parent="SubViewport/World"]
+
+[node name="UI" parent="." instance=ExtResource("9_2ux7c")]
+
+[connection signal="enemy_attacked_watchtower" from="SubViewport/World/EnemyManager" to="." method="_on_watchtower_attacked"]
+[connection signal="change_power" from="SubViewport/World/Vehicle" to="." method="_change_power"]

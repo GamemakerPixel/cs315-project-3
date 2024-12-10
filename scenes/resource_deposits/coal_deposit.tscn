@@ -1,0 +1,105 @@
+[gd_scene load_steps=10 format=3 uid="uid://ba03rrluxfslj"]
+
+[ext_resource type="ArrayMesh" uid="uid://dn5rv1bwtmtnt" path="res://assets/meshes/resource_deposits/coal_deposit.obj" id="1_sdxi6"]
+[ext_resource type="Script" path="res://scenes/resource_deposits/resource_deposit.gd" id="1_t6ykq"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0pyoj"]
+frequency = 0.0288
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3x75w"]
+as_normal_map = true
+bump_strength = 3.4
+noise = SubResource("FastNoiseLite_0pyoj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uyntf"]
+albedo_color = Color(0.00820202, 0.00820202, 0.00820202, 1)
+roughness = 0.8
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_3x75w")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_j16vn"]
+height = 1.0
+radius = 3.75
+
+[sub_resource type="Animation" id="Animation_cgi6s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Collision:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(5, 1, 5)]
+}
+
+[sub_resource type="Animation" id="Animation_ddjgd"]
+resource_name = "disappear"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Collision:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(5, 1, 5), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hyop3"]
+_data = {
+"RESET": SubResource("Animation_cgi6s"),
+"disappear": SubResource("Animation_ddjgd")
+}
+
+[node name="CoalDeposit" type="Area3D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_t6ykq")
+amount = 140.0
+amount_per_gatherer_cycle = 7.0
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = ExtResource("1_sdxi6")
+surface_material_override/0 = SubResource("StandardMaterial3D_uyntf")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_j16vn")
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hyop3")
+}
+
+[connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]

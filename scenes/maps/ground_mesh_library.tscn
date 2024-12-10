@@ -1,0 +1,87 @@
+[gd_scene load_steps=13 format=3 uid="uid://dr3txq5nnny2t"]
+
+[ext_resource type="Material" uid="uid://de5358rmw3ona" path="res://resources/materials/grass.tres" id="1_ll6m7"]
+[ext_resource type="Shader" path="res://resources/shaders/grass.gdshader" id="2_1s23y"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_uvvpw"]
+
+[sub_resource type="Gradient" id="Gradient_3adl1"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.357798, 0.40367, 0.59633, 0.761468)
+colors = PackedColorArray(0.0104, 0.26, 0.23504, 1, 0.0544, 0.32, 0.262453, 1, 0.0612, 0.36, 0.18072, 1, 0.144, 0.45, 0.1542, 1, 0.31248, 0.56, 0.2688, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f8me8"]
+gradient = SubResource("Gradient_3adl1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mh8nj"]
+render_priority = 0
+shader = ExtResource("2_1s23y")
+shader_parameter/roughness = 1.0
+shader_parameter/color_octaves = 3
+shader_parameter/normal_octaves = 2
+shader_parameter/normal_depth = 0.0
+shader_parameter/lacunarity = 3.0
+shader_parameter/base_uv_scale = 0.25
+shader_parameter/persistance = 0.75
+shader_parameter/color_gradient = SubResource("GradientTexture1D_f8me8")
+
+[sub_resource type="Gradient" id="Gradient_8mqp6"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.428135, 0.492355, 0.651376, 0.776758)
+colors = PackedColorArray(0.129203, 0.089651, 0.00808614, 1, 0.2, 0.1916, 0.172, 1, 0.31, 0.31, 0.31, 1, 0.3784, 0.39818, 0.43, 1, 0.4731, 0.51509, 0.57, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_abcwk"]
+gradient = SubResource("Gradient_8mqp6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_idqae"]
+render_priority = 0
+shader = ExtResource("2_1s23y")
+shader_parameter/roughness = 1.0
+shader_parameter/color_octaves = 4
+shader_parameter/normal_octaves = 2
+shader_parameter/normal_depth = 0.0
+shader_parameter/lacunarity = 3.0
+shader_parameter/base_uv_scale = 0.25
+shader_parameter/persistance = 0.75
+shader_parameter/color_gradient = SubResource("GradientTexture1D_abcwk")
+
+[sub_resource type="Gradient" id="Gradient_tuj08"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.428135, 0.492355, 0.651376, 0.776758)
+colors = PackedColorArray(0.0444214, 0.00437532, 0.00297734, 1, 0.25, 0.075, 0.04, 1, 0.78, 0.585, 0.312, 1, 0.91, 0.811265, 0.6279, 1, 0.97, 0.927967, 0.776, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_w02j3"]
+gradient = SubResource("Gradient_tuj08")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o6tje"]
+render_priority = 0
+shader = ExtResource("2_1s23y")
+shader_parameter/roughness = 1.0
+shader_parameter/color_octaves = 4
+shader_parameter/normal_octaves = 2
+shader_parameter/normal_depth = 0.0
+shader_parameter/lacunarity = 3.0
+shader_parameter/base_uv_scale = 0.25
+shader_parameter/persistance = 0.75
+shader_parameter/color_gradient = SubResource("GradientTexture1D_w02j3")
+
+[node name="GroundMeshLibrary" type="Node3D"]
+
+[node name="Grass" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_uvvpw")
+surface_material_override/0 = ExtResource("1_ll6m7")
+
+[node name="Forest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = SubResource("PlaneMesh_uvvpw")
+surface_material_override/0 = SubResource("ShaderMaterial_mh8nj")
+
+[node name="Mountains" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+mesh = SubResource("PlaneMesh_uvvpw")
+surface_material_override/0 = SubResource("ShaderMaterial_idqae")
+
+[node name="Magma" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0)
+mesh = SubResource("PlaneMesh_uvvpw")
+surface_material_override/0 = SubResource("ShaderMaterial_o6tje")

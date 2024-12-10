@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://rhuax88c10ot"]
+[gd_scene load_steps=13 format=3 uid="uid://rhuax88c10ot"]
 
 [ext_resource type="ArrayMesh" uid="uid://cjy3o3qs47s7d" path="res://assets/meshes/enemies/placeholder.obj" id="1_ebdkl"]
 [ext_resource type="Script" path="res://scenes/enemies/enemy.gd" id="1_t0dhi"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://scenes/enemies/states/on_ground.gd" id="4_xcii5"]
 [ext_resource type="Script" path="res://scenes/enemies/states/mounting_vehicle.gd" id="5_02mym"]
 [ext_resource type="Script" path="res://scenes/enemies/states/on_vehicle.gd" id="6_yoxcm"]
+[ext_resource type="Script" path="res://scenes/enemies/states/attacking.gd" id="7_c263l"]
+[ext_resource type="Script" path="res://scenes/enemies/states/defeated.gd" id="8_312rq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o2g56"]
 
@@ -89,6 +91,11 @@ libraries = {
 }
 
 [node name="Navigation" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.2
+target_desired_distance = 1.5
+path_height_offset = 1.5
+path_max_distance = 0.01
+path_postprocessing = 1
 
 [node name="States" type="Node" parent="."]
 script = ExtResource("3_wrvlt")
@@ -102,6 +109,10 @@ script = ExtResource("5_02mym")
 [node name="OnVehicle" type="Node" parent="States"]
 script = ExtResource("6_yoxcm")
 
-[node name="Exploding" type="Node" parent="States"]
+[node name="Attacking" type="Node" parent="States"]
+script = ExtResource("7_c263l")
+
+[node name="Defeated" type="Node" parent="States"]
+script = ExtResource("8_312rq")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

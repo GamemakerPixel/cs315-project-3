@@ -1,0 +1,52 @@
+[gd_scene load_steps=10 format=3 uid="uid://lcdj3j62aqe5"]
+
+[ext_resource type="ArrayMesh" uid="uid://c3rfqakmbtk7e" path="res://assets/meshes/buildings/towers/sniper_tower.obj" id="1_cp4xj"]
+[ext_resource type="Script" path="res://scenes/buildings/towers/tower.gd" id="2_fhydg"]
+[ext_resource type="Script" path="res://scenes/buildings/towers/tower_state_machine.gd" id="3_ps5f8"]
+[ext_resource type="Script" path="res://scenes/buildings/towers/states/powered_on.gd" id="4_vq12c"]
+[ext_resource type="Script" path="res://scenes/buildings/towers/states/waiting.gd" id="5_kjbuy"]
+[ext_resource type="Script" path="res://scenes/buildings/towers/states/powered_off.gd" id="6_tm0uk"]
+[ext_resource type="AudioStream" uid="uid://cqdgqkmntb8y" path="res://assets/sound/explode.wav" id="7_n8hmx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vuefc"]
+albedo_color = Color(0.59, 0.422637, 0.3717, 1)
+metallic = 0.52
+roughness = 0.25
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ytjfg"]
+radius = 14.142
+
+[node name="Explosives" type="MeshInstance3D"]
+mesh = ExtResource("1_cp4xj")
+surface_material_override/0 = SubResource("StandardMaterial3D_vuefc")
+script = ExtResource("2_fhydg")
+damage = 25
+charge_energy = 20.0
+
+[node name="RangeArea" type="Area3D" parent="."]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="RangeArea"]
+shape = SubResource("CylinderShape3D_ytjfg")
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("3_ps5f8")
+
+[node name="PoweredOn" type="Node" parent="States"]
+script = ExtResource("4_vq12c")
+
+[node name="Waiting" type="Node" parent="States"]
+script = ExtResource("5_kjbuy")
+
+[node name="PoweredOff" type="Node" parent="States"]
+script = ExtResource("6_tm0uk")
+
+[node name="Attack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_n8hmx")
+pitch_scale = 1.8
+
+[connection signal="area_entered" from="RangeArea" to="." method="_enemy_entered_range"]
+[connection signal="area_exited" from="RangeArea" to="." method="_enemy_exited_range"]

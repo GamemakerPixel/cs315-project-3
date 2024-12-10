@@ -1,0 +1,195 @@
+[gd_scene load_steps=28 format=3 uid="uid://dfhf4quxg8s8b"]
+
+[ext_resource type="Script" path="res://scenes/resource_deposits/resource_deposit.gd" id="1_egcd5"]
+[ext_resource type="ArrayMesh" uid="uid://b0eyybifhmfy0" path="res://assets/meshes/resource_deposits/lumber_deposit.obj" id="2_qgh5y"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hxmt5"]
+frequency = 0.0409
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_avkna"]
+width = 1000
+height = 200
+as_normal_map = true
+bump_strength = 24.8
+noise = SubResource("FastNoiseLite_hxmt5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kwcx3"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ksj0"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_157fp"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ncj31"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fv2bj"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5umra"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d07cx"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s6278"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v23q7"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_737p1"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_optfm"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5h4ob"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vsbeu"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nsidy"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vmx4p"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ctt2"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tiail"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u0idr"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fqme3"]
+albedo_color = Color(0.0558, 0.18, 0.10341, 1)
+normal_texture = SubResource("NoiseTexture2D_avkna")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_j16vn"]
+height = 1.0
+radius = 3.75
+
+[sub_resource type="Animation" id="Animation_cgi6s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Collision:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ddjgd"]
+resource_name = "disappear"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Collision:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hyop3"]
+_data = {
+"RESET": SubResource("Animation_cgi6s"),
+"disappear": SubResource("Animation_ddjgd")
+}
+
+[node name="LumberDeposit" type="Area3D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_egcd5")
+consumable = 1
+amount = 40.0
+amount_per_gatherer_cycle = 10.0
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_qgh5y")
+surface_material_override/0 = SubResource("StandardMaterial3D_kwcx3")
+surface_material_override/1 = SubResource("StandardMaterial3D_5ksj0")
+surface_material_override/2 = SubResource("StandardMaterial3D_157fp")
+surface_material_override/3 = SubResource("StandardMaterial3D_ncj31")
+surface_material_override/4 = SubResource("StandardMaterial3D_fv2bj")
+surface_material_override/5 = SubResource("StandardMaterial3D_5umra")
+surface_material_override/6 = SubResource("StandardMaterial3D_d07cx")
+surface_material_override/7 = SubResource("StandardMaterial3D_s6278")
+surface_material_override/8 = SubResource("StandardMaterial3D_v23q7")
+surface_material_override/9 = SubResource("StandardMaterial3D_737p1")
+surface_material_override/10 = SubResource("StandardMaterial3D_optfm")
+surface_material_override/11 = SubResource("StandardMaterial3D_5h4ob")
+surface_material_override/12 = SubResource("StandardMaterial3D_vsbeu")
+surface_material_override/13 = SubResource("StandardMaterial3D_nsidy")
+surface_material_override/14 = SubResource("StandardMaterial3D_vmx4p")
+surface_material_override/15 = SubResource("StandardMaterial3D_6ctt2")
+surface_material_override/16 = SubResource("StandardMaterial3D_tiail")
+surface_material_override/17 = SubResource("StandardMaterial3D_u0idr")
+surface_material_override/18 = SubResource("StandardMaterial3D_fqme3")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_j16vn")
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hyop3")
+}
+
+[connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]

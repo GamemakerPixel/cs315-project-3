@@ -1,9 +1,34 @@
-[gd_scene load_steps=6 format=3 uid="uid://bnavhwlfl3mdu"]
+[gd_scene load_steps=13 format=3 uid="uid://bnavhwlfl3mdu"]
 
 [ext_resource type="Theme" uid="uid://cgdlk7toi888" path="res://resources/themes/game_ui.tres" id="1_f2ttj"]
 [ext_resource type="Script" path="res://scenes/ui/ui.gd" id="1_x8ufj"]
 [ext_resource type="Texture2D" uid="uid://ba8qkaaumibdb" path="res://assets/textures/ui/visibility_button_icon.png" id="2_gkskk"]
+[ext_resource type="Texture2D" uid="uid://lercfaut4oop" path="res://assets/textures/ui/health_icon.svg" id="3_snpd7"]
 [ext_resource type="PackedScene" uid="uid://bcefv88swmsok" path="res://scenes/ui/building_button.tscn" id="4_nujkx"]
+[ext_resource type="Script" path="res://scenes/ui/energy_indicator.gd" id="4_p2hnt"]
+[ext_resource type="Texture2D" uid="uid://bodv37fyxiekj" path="res://assets/textures/ui/energy_icon.svg" id="4_tsheu"]
+[ext_resource type="Script" path="res://scenes/ui/game_over_buttons.gd" id="6_8cx61"]
+[ext_resource type="PackedScene" uid="uid://bdk0i7sw0ko1r" path="res://scenes/ui/resource_entry.tscn" id="6_cmx7t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2grs"]
+bg_color = Color(0.14, 0.14, 0.14, 1)
+border_width_right = 5
+border_width_bottom = 8
+border_color = Color(0.0768359, 0.0768358, 0.0768358, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d016r"]
+bg_color = Color(0.89, 0.154415, 0.1157, 1)
+border_width_left = 5
+border_width_top = 8
+border_color = Color(1, 0.298, 0.19, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1wnug"]
 content_margin_top = 8.0
@@ -12,8 +37,9 @@ bg_color = Color(0.407843, 0.32549, 0.301961, 1)
 corner_radius_top_left = 16
 corner_radius_bottom_left = 16
 
-[node name="UI" type="CanvasLayer"]
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("health_progress")]
 script = ExtResource("1_x8ufj")
+health_progress = NodePath("Margin/HBox/Stats/VBox/HealthBar/Progress")
 
 [node name="Margin" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -24,87 +50,257 @@ grow_vertical = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 theme = ExtResource("1_f2ttj")
-theme_override_constants/margin_right = 0
 
 [node name="HBox" type="HBoxContainer" parent="Margin"]
+layout_mode = 2
+
+[node name="Stats" type="HBoxContainer" parent="Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="Margin/HBox/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="HealthBar" type="HBoxContainer" parent="Margin/HBox/Stats/VBox"]
+layout_mode = 2
+
+[node name="IconSpace" type="Control" parent="Margin/HBox/Stats/VBox/HealthBar"]
+custom_minimum_size = Vector2(40, 60)
+layout_mode = 2
+
+[node name="Progress" type="ProgressBar" parent="Margin/HBox/Stats/VBox/HealthBar"]
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_g2grs")
+theme_override_styles/fill = SubResource("StyleBoxFlat_d016r")
+value = 75.0
+show_percentage = false
+
+[node name="Icon" type="Sprite2D" parent="Margin/HBox/Stats/VBox/HealthBar"]
+position = Vector2(40, 30)
+texture = ExtResource("3_snpd7")
+
+[node name="EnergyIndicator" type="HBoxContainer" parent="Margin/HBox/Stats/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+script = ExtResource("4_p2hnt")
+
+[node name="IconSpace" type="Control" parent="Margin/HBox/Stats/VBox/EnergyIndicator"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+
+[node name="Icon" type="Sprite2D" parent="Margin/HBox/Stats/VBox/EnergyIndicator"]
+position = Vector2(40, 30)
+texture = ExtResource("4_tsheu")
+
+[node name="Value" type="Label" parent="Margin/HBox/Stats/VBox/EnergyIndicator"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "XXX kW"
+vertical_alignment = 1
+
+[node name="Build" type="HBoxContainer" parent="Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_constants/separation = 0
 alignment = 2
 
-[node name="VisibilityButton" type="Button" parent="Margin/HBox"]
+[node name="VisibilityButton" type="Button" parent="Margin/HBox/Build"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_1wnug")
 icon = ExtResource("2_gkskk")
 
-[node name="Buildings" type="TabContainer" parent="Margin/HBox"]
+[node name="Buildings" type="TabContainer" parent="Margin/HBox/Build"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 tab_alignment = 1
-current_tab = 2
+current_tab = 0
 
-[node name="Actions" type="MarginContainer" parent="Margin/HBox/Buildings"]
-visible = false
+[node name="Resources" type="MarginContainer" parent="Margin/HBox/Build/Buildings"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Buildings/Actions"]
+[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Build/Buildings/Resources"]
 layout_mode = 2
 horizontal_scroll_mode = 3
 
-[node name="Options" type="VBoxContainer" parent="Margin/HBox/Buildings/Actions/Scroll"]
+[node name="Entries" type="VBoxContainer" parent="Margin/HBox/Build/Buildings/Resources/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="Margin/HBox/Buildings/Actions/Scroll/Options" instance=ExtResource("4_nujkx")]
+[node name="ResourceEntry" parent="Margin/HBox/Build/Buildings/Resources/Scroll/Entries" instance=ExtResource("6_cmx7t")]
 layout_mode = 2
 
-[node name="Towers" type="MarginContainer" parent="Margin/HBox/Buildings"]
+[node name="Towers" type="MarginContainer" parent="Margin/HBox/Build/Buildings"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Buildings/Towers"]
+[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Build/Buildings/Towers"]
 layout_mode = 2
 horizontal_scroll_mode = 3
 
-[node name="Options" type="VBoxContainer" parent="Margin/HBox/Buildings/Towers/Scroll"]
+[node name="Options" type="VBoxContainer" parent="Margin/HBox/Build/Buildings/Towers/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="Margin/HBox/Buildings/Towers/Scroll/Options" instance=ExtResource("4_nujkx")]
+[node name="0" parent="Margin/HBox/Build/Buildings/Towers/Scroll/Options" instance=ExtResource("4_nujkx")]
 layout_mode = 2
 
-[node name="Generators" type="MarginContainer" parent="Margin/HBox/Buildings"]
+[node name="Generators" type="MarginContainer" parent="Margin/HBox/Build/Buildings"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Buildings/Generators"]
+[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Build/Buildings/Generators"]
 layout_mode = 2
 horizontal_scroll_mode = 3
 
-[node name="Options" type="VBoxContainer" parent="Margin/HBox/Buildings/Generators/Scroll"]
+[node name="Options" type="VBoxContainer" parent="Margin/HBox/Build/Buildings/Generators/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="Margin/HBox/Buildings/Generators/Scroll/Options" instance=ExtResource("4_nujkx")]
+[node name="0" parent="Margin/HBox/Build/Buildings/Generators/Scroll/Options" instance=ExtResource("4_nujkx")]
 layout_mode = 2
 
-[node name="Gatherers" type="MarginContainer" parent="Margin/HBox/Buildings"]
+[node name="Gatherers" type="MarginContainer" parent="Margin/HBox/Build/Buildings"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Buildings/Gatherers"]
+[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Build/Buildings/Gatherers"]
 layout_mode = 2
 horizontal_scroll_mode = 3
 
-[node name="Options" type="VBoxContainer" parent="Margin/HBox/Buildings/Gatherers/Scroll"]
+[node name="Options" type="VBoxContainer" parent="Margin/HBox/Build/Buildings/Gatherers/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="Margin/HBox/Buildings/Gatherers/Scroll/Options" instance=ExtResource("4_nujkx")]
+[node name="0" parent="Margin/HBox/Build/Buildings/Gatherers/Scroll/Options" instance=ExtResource("4_nujkx")]
 layout_mode = 2
 
-[connection signal="pressed" from="Margin/HBox/VisibilityButton" to="." method="_on_visibility_button_pressed"]
+[node name="GameOver" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("1_f2ttj")
+color = Color(0.15, 0.15, 0.15, 0.392157)
+
+[node name="Margin" type="MarginContainer" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="GameOver/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GameOver/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.901961, 0.133333, 0.14902, 1)
+theme_override_colors/font_shadow_color = Color(0.247059, 0.12549, 0.12549, 1)
+theme_override_font_sizes/font_size = 64
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="ButtonMargin" type="MarginContainer" parent="GameOver/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 400
+theme_override_constants/margin_bottom = 200
+
+[node name="Buttons" type="VBoxContainer" parent="GameOver/Margin/VBox/ButtonMargin"]
+layout_mode = 2
+theme_override_constants/separation = 30
+script = ExtResource("6_8cx61")
+
+[node name="Retry" type="Button" parent="GameOver/Margin/VBox/ButtonMargin/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Retry"
+
+[node name="Menu" type="Button" parent="GameOver/Margin/VBox/ButtonMargin/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Menu"
+
+[node name="Quit" type="Button" parent="GameOver/Margin/VBox/ButtonMargin/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Quit"
+
+[node name="Win" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("1_f2ttj")
+color = Color(0.15, 0.15, 0.15, 0.392157)
+
+[node name="Margin" type="MarginContainer" parent="Win"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Win/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Win/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.913725, 0.815686, 0.188235, 1)
+theme_override_font_sizes/font_size = 64
+text = "Victory!!"
+horizontal_alignment = 1
+
+[node name="ButtonMargin" type="MarginContainer" parent="Win/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 400
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 400
+theme_override_constants/margin_bottom = 200
+
+[node name="Buttons" type="VBoxContainer" parent="Win/Margin/VBox/ButtonMargin"]
+layout_mode = 2
+theme_override_constants/separation = 30
+script = ExtResource("6_8cx61")
+
+[node name="Retry" type="Button" parent="Win/Margin/VBox/ButtonMargin/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Play Again"
+
+[node name="Menu" type="Button" parent="Win/Margin/VBox/ButtonMargin/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Menu"
+
+[node name="Quit" type="Button" parent="Win/Margin/VBox/ButtonMargin/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Quit"
+
+[connection signal="pressed" from="Margin/HBox/Build/VisibilityButton" to="." method="_on_visibility_button_pressed"]
+[connection signal="pressed" from="GameOver/Margin/VBox/ButtonMargin/Buttons/Retry" to="GameOver/Margin/VBox/ButtonMargin/Buttons" method="_on_retry"]
+[connection signal="pressed" from="GameOver/Margin/VBox/ButtonMargin/Buttons/Menu" to="GameOver/Margin/VBox/ButtonMargin/Buttons" method="_on_menu"]
+[connection signal="pressed" from="GameOver/Margin/VBox/ButtonMargin/Buttons/Quit" to="GameOver/Margin/VBox/ButtonMargin/Buttons" method="_on_quit"]
+[connection signal="pressed" from="Win/Margin/VBox/ButtonMargin/Buttons/Retry" to="Win/Margin/VBox/ButtonMargin/Buttons" method="_on_retry"]
+[connection signal="pressed" from="Win/Margin/VBox/ButtonMargin/Buttons/Menu" to="Win/Margin/VBox/ButtonMargin/Buttons" method="_on_menu"]
+[connection signal="pressed" from="Win/Margin/VBox/ButtonMargin/Buttons/Quit" to="Win/Margin/VBox/ButtonMargin/Buttons" method="_on_quit"]

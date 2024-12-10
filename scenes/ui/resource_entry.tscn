@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdk0i7sw0ko1r"]
+
+[ext_resource type="Script" path="res://scenes/ui/resource_entry.gd" id="1_soadi"]
+
+[node name="ResourceEntry" type="Label"]
+text = "Consumable: XX"
+script = ExtResource("1_soadi")

@@ -1,0 +1,4 @@
+Sound Effects:
+	Pop sound for enemy hurt and death - https://freesound.org/people/greenvwbeetle/sounds/244655/ - CC0
+	Air explosion used for tower attack - https://freesound.org/people/SamsterBirdies/sounds/580040/ - CC0
+	

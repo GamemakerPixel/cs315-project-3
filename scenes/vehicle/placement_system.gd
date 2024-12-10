@@ -2,12 +2,21 @@ extends Node3D
 
 const PLATFORM_TILE = 0
 
+@onready var building_manager = $Buildings
+
+# Set by Vehicle
+var consumable_pool: ConsumablePool:
+	set(new_consumable_pool):
+		consumable_pool = new_consumable_pool
+		building_manager.consumable_pool = consumable_pool
+
 var placement_enabled := false : set = _set_placement_enabled
 
 var _currently_placing := false
 var _platform_placing_enabled := false
 
 var _current_building_scene: PackedScene
+var _current_building: BuildingData.Building
 
 
 func _ready() -> void:
@@ -31,8 +40,9 @@ func _process(_delta: float) -> void:
 
 
 func select_building(building: BuildingData.Building) -> void:
-	$PlacementPreview.mesh = BuildingData.get_building_mesh(building)
+	$PlacementPreview.load_building(building)
 	_current_building_scene = BuildingData.get_building_scene(building)
+	_current_building = building
 	placement_enabled = true
 
 
@@ -48,8 +58,23 @@ func _place_at_mouse_position() -> void:
 	if $GridMap.get_cell_item(platform_tile_coords) != PLATFORM_TILE:
 		return
 	
+	var local_coords = $PlacementPreview.get_local_coordinates()
+	if building_manager.is_position_occupied(local_coords):
+		return
+	
+	
+	var building_cost = BuildingData.get_consumable_cost(_current_building)
+	if not (
+		DebugTools.check_enabled(DebugTools.DebugTool.FREE_BUILDINGS)
+		or consumable_pool.use_many_exactly(building_cost)
+	):
+		# Signal UI to notify player.
+		return
+	
+	
 	var building = _current_building_scene.instantiate()
-	building.position = $PlacementPreview.get_local_coordinates()
+	building.position = local_coords
+	building_manager.track_building(building)
 	$Buildings.add_child(building)
 
 
