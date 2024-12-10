@@ -281,6 +281,7 @@ theme_override_constants/margin_bottom = 200
 layout_mode = 2
 theme_override_constants/separation = 30
 script = ExtResource("6_8cx61")
+menu_scene = "res://scenes/menus/main_menu.tscn"
 
 [node name="Retry" type="Button" parent="Win/Margin/VBox/ButtonMargin/Buttons"]
 layout_mode = 2

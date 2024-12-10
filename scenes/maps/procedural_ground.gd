@@ -152,7 +152,6 @@ func _load_chunk(chunk: Vector2i) -> void:
 		_loaded_deposits[chunk] = 0
 		var deposit = resource_deposits[stats.dominant_zone]
 		_place_resource_deposit(deposit, rect.get_center())
-		print(stats._tile_counts)
 	
 	_chunks_stats_loaded[chunk] = stats
 

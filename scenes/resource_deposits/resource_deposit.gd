@@ -9,6 +9,8 @@ extends Area3D
 func gather_resource() -> float:
 	if amount_per_gatherer_cycle >= amount:
 		$Animation.play("disappear")
+		if has_node("Obtain"):
+			$Obtain.play()
 		return amount
 	
 	amount -= amount_per_gatherer_cycle

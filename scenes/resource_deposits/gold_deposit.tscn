@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cdw2u706qmfqx"]
+[gd_scene load_steps=9 format=3 uid="uid://cdw2u706qmfqx"]
 
 [ext_resource type="Script" path="res://scenes/resource_deposits/resource_deposit.gd" id="1_1wiil"]
 [ext_resource type="ArrayMesh" uid="uid://dq71awsyl2oqw" path="res://assets/meshes/resource_deposits/gold_deposit.obj" id="2_jokjg"]
+[ext_resource type="AudioStream" uid="uid://di15by5vuatf3" path="res://assets/sound/gold_obtain.wav" id="3_yauq5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n3io1"]
 albedo_color = Color(0.873497, 0.736135, 0.147213, 1)
@@ -36,7 +37,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(5, 1, 5)]
+"values": [Vector3(1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_ddjgd"]
@@ -63,7 +64,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(5, 1, 5), Vector3(0, 0, 0)]
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hyop3"]
@@ -76,10 +77,10 @@ _data = {
 collision_layer = 16
 collision_mask = 0
 script = ExtResource("1_1wiil")
+consumable = 5
 amount = 1.0
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = ExtResource("2_jokjg")
 surface_material_override/0 = SubResource("StandardMaterial3D_n3io1")
 surface_material_override/1 = SubResource("StandardMaterial3D_n3io1")
@@ -95,5 +96,8 @@ shape = SubResource("CylinderShape3D_j16vn")
 libraries = {
 "": SubResource("AnimationLibrary_hyop3")
 }
+
+[node name="Obtain" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_yauq5")
 
 [connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]

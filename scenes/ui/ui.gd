@@ -9,6 +9,7 @@ const _TRACKED_RESOURCES = [
 	ConsumablePool.Consumable.LUMBER,
 	ConsumablePool.Consumable.COAL,
 	ConsumablePool.Consumable.IRON,
+	ConsumablePool.Consumable.GOLD,
 ]
 
 @export var health_progress: ProgressBar

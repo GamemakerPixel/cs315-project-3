@@ -71,7 +71,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(5, 1, 5)]
+"values": [Vector3(1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_ddjgd"]
@@ -98,7 +98,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(5, 1, 5), Vector3(0, 0, 0)]
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hyop3"]
@@ -115,7 +115,6 @@ consumable = 3
 amount = 3.0
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = ExtResource("2_e4acv")
 surface_material_override/0 = SubResource("StandardMaterial3D_pgmbt")
 surface_material_override/1 = SubResource("StandardMaterial3D_lj12h")
@@ -134,5 +133,3 @@ shape = SubResource("CylinderShape3D_j16vn")
 libraries = {
 "": SubResource("AnimationLibrary_hyop3")
 }
-
-[connection signal="animation_finished" from="Animation" to="." method="_on_animation_finished"]

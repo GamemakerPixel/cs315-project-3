@@ -5,6 +5,7 @@ const CONSUMABLE_DISPLAY_NAME = {
 	ConsumablePool.Consumable.LUMBER: "Lumber",
 	ConsumablePool.Consumable.COAL: "Coal",
 	ConsumablePool.Consumable.IRON: "Iron",
+	ConsumablePool.Consumable.GOLD: "Gold",
 }
 
 var consumable: ConsumablePool.Consumable
