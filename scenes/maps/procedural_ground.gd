@@ -22,7 +22,9 @@ class ChunkStats:
 		Tile.MAGMA: 0,
 	}
 	
-	var dominant_zone: Tile : get = _get_dominant_zone
+	# This is done to signal that the dominant_zone has not been calculated yet.
+	@warning_ignore("int_as_enum_without_cast", "int_as_enum_without_match")
+	var dominant_zone: Tile = -1 : get = _get_dominant_zone
 	# Tile: % of chunk
 	var tile_distribution: Dictionary = {} : get = _get_tile_distribution
 	
@@ -150,6 +152,7 @@ func _load_chunk(chunk: Vector2i) -> void:
 		_loaded_deposits[chunk] = 0
 		var deposit = resource_deposits[stats.dominant_zone]
 		_place_resource_deposit(deposit, rect.get_center())
+		print(stats._tile_counts)
 	
 	_chunks_stats_loaded[chunk] = stats
 
