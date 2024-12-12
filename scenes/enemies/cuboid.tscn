@@ -153,6 +153,9 @@ path_height_offset = 1.5
 path_max_distance = 0.01
 path_postprocessing = 1
 
+[node name="OffScreen" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-0.5, 0, -0.5, 1, 1, 1)
+
 [node name="States" type="Node" parent="."]
 script = ExtResource("3_sfh3i")
 
@@ -176,3 +179,4 @@ stream = ExtResource("9_m7g67")
 volume_db = 0.488
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="OffScreen" to="." method="attempt_despawn"]

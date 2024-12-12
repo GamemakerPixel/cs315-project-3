@@ -64,31 +64,16 @@ class ChunkStats:
 const TILE_TO_NOISE_MULTIPLIER = 1.0
 const GROUND_LEVEL = 0
 const CHUNK_SIZE = 50
-const REQUIRED_CHUNKS_OFFSET = [
-	Vector2i(-1, -1),
-	Vector2i(-1, 0),
-	Vector2i(-1, 1),
-	Vector2i(0, -1),
-	Vector2i.ZERO,
-	Vector2i(0, 1),
-	Vector2i(1, -1),
-	Vector2i(1, 0),
-	Vector2i(1, 1),
-]
 
 @export var render_around: Node3D
 @export var noise: FastNoiseLite
 @export var tile_gradient_keys: Array[Tile]
 @export var tile_gradient_values: Array[float]
-@export var resource_deposits: Array[PackedScene]
 
 var _current_chunk: Vector2i = Vector2i.ONE * -999 : set = _set_current_chunk
 var _chunks_loaded: Array[Vector2i]: set = _set_chunks_loaded
 # Chunk: ChunkStats
 var _chunks_stats_loaded: Dictionary = {}
-# Using this as a hash set.
-# {Vector2i: 0}
-var _loaded_deposits: Dictionary = {}
 
 
 func _ready() -> void:
@@ -101,7 +86,50 @@ func _physics_process(_delta: float) -> void:
 	_current_chunk = _tile_to_chunk(Vector2i(map_coords.x, map_coords.z))
 
 
-func _tile_to_chunk(tile: Vector2i) -> Vector2i:
+static func chunk_to_rect(chunk: Vector2i) -> Rect2i:
+	return Rect2i(
+		_chunk_to_tile_origin(chunk),
+		Vector2i(CHUNK_SIZE, CHUNK_SIZE)
+	)
+
+
+static func get_adjacent_chunks(chunk: Vector2i) -> Array[Vector2i]:
+	var chunks: Array[Vector2i] = []
+	
+	for x_offset in range(-1, 2):
+		for y_offset in range(-1, 2):
+			if x_offset == 0 and y_offset == 0:
+				continue
+			
+			chunks.append(chunk + Vector2i(x_offset, y_offset))
+	
+	return chunks
+
+
+func tile_2d_to_local_2d(local: Vector2) -> Vector2:
+	var tile_3d := tile_2d_to_local_3d(local)
+	return Vector2(tile_3d.x, tile_3d.z)
+
+
+func tile_2d_to_local_3d(local: Vector2) -> Vector3:
+	var tile_3d := Vector3(local.x, GROUND_LEVEL, local.y)
+	return map_to_local(tile_3d) - position
+
+
+func local_2d_to_tile_3d(local: Vector2) -> Vector3i:
+	var local_3d = Vector3(local.x, GROUND_LEVEL, local.y)
+	return local_to_map(local_3d)
+
+
+func local_2d_to_local_3d(local: Vector2) -> Vector3:
+	return Vector3(
+		local.x,
+		-position.y,
+		local.y
+	)
+
+
+static func _tile_to_chunk(tile: Vector2i) -> Vector2i:
 	var negative_adjust = Vector2i(
 		CHUNK_SIZE if tile.x < 0 else 0,
 		CHUNK_SIZE if tile.y < 0 else 0,
@@ -109,24 +137,18 @@ func _tile_to_chunk(tile: Vector2i) -> Vector2i:
 	return (tile - negative_adjust) / CHUNK_SIZE
 
 
-func _chunk_to_tile_origin(chunk: Vector2i) -> Vector2i:
+static func _chunk_to_tile_origin(chunk: Vector2i) -> Vector2i:
 	return chunk * CHUNK_SIZE
-
-
-func _chunk_to_rect(chunk: Vector2i) -> Rect2i:
-	return Rect2i(
-		_chunk_to_tile_origin(chunk),
-		Vector2i(CHUNK_SIZE, CHUNK_SIZE)
-	)
 
 
 func _unload_chunks(chunks: Array[Vector2i]) -> void:
 	for chunk in chunks:
 		_unload_chunk(chunk)
+		$ResourceDeposits.unload_deposits_in_chunk(chunk)
 
 
 func _unload_chunk(chunk: Vector2i) -> void:
-	var rect := _chunk_to_rect(chunk)
+	var rect := chunk_to_rect(chunk)
 	for x in range(rect.position.x, rect.end.x):
 		for y in range(rect.position.y, rect.end.y):
 			set_cell_item(Vector3i(x, GROUND_LEVEL, y), -1)
@@ -137,24 +159,18 @@ func _unload_chunk(chunk: Vector2i) -> void:
 func _load_chunks(chunks: Array[Vector2i]) -> void:
 	for chunk in chunks:
 		_load_chunk(chunk)
+		$ResourceDeposits.load_deposits_in_chunk(chunk)
 
 
 func _load_chunk(chunk: Vector2i) -> void:
 	var stats = ChunkStats.new()
-	var rect := _chunk_to_rect(chunk)
+	var rect := chunk_to_rect(chunk)
 	for x in range(rect.position.x, rect.end.x):
 		for y in range(rect.position.y, rect.end.y):
 			var tile: Tile = _sample_noise_for_tile(x, y)
 			stats.count(tile)
 			set_cell_item(Vector3i(x, GROUND_LEVEL, y), tile)
-	
-	if not _loaded_deposits.has(chunk):
-		_loaded_deposits[chunk] = 0
-		var deposit = resource_deposits[stats.dominant_zone]
-		_place_resource_deposit(deposit, rect.get_center())
-	
 	_chunks_stats_loaded[chunk] = stats
-
 
 
 func _sample_noise_for_tile(x: int, y: int) -> Tile:
@@ -178,9 +194,9 @@ func _place_resource_deposit(deposit_scene: PackedScene, tile: Vector2i) -> void
 
 
 func _refresh_required_chunks() -> void:
-	var required_chunks: Array[Vector2i] = []
-	for offset in REQUIRED_CHUNKS_OFFSET:
-		required_chunks.append(_current_chunk + offset)
+	var required_chunks: Array[Vector2i] = [_current_chunk]
+	required_chunks.append_array(get_adjacent_chunks(_current_chunk))
+	
 	_chunks_loaded = required_chunks
 
 

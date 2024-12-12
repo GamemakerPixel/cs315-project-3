@@ -6,7 +6,7 @@ func on_entry() -> void:
 
 
 func on_physics_process(delta: float) -> void:
-	var target: Vector3 = _enemy.get_target_position.call()
+	var target: Vector3 = _enemy.get_target_position()
 	var direction = (target - _enemy.global_position).normalized()
 	_enemy.position += direction * _enemy.speed * delta
 

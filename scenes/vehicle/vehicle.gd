@@ -68,8 +68,9 @@ func set_power_avaliable(power: int) -> void:
 
 func _load_wide_camera() -> void:
 	if DebugTools.check_enabled(DebugTools.DebugTool.WIDE_CAMERA):
-		$Camera3D.size *= 10
-		$Camera3D.position *= 10
+		$Camera3D.rotation.x = -90.0
+		$Camera3D.size *= 5
+		$Camera3D.position.z = 0
 
 
 func _drive(delta: float) -> void:

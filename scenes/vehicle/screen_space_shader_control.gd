@@ -12,4 +12,6 @@ func _set_enable_in_editor(new_enable_in_editor: bool) -> void:
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
-		visible = enable_in_game
+		visible = enable_in_game and not DebugTools.check_enabled(
+			DebugTools.DebugTool.WIDE_CAMERA
+		)

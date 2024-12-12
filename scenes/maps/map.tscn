@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://civj3l1uq6ube"]
+[gd_scene load_steps=21 format=3 uid="uid://civj3l1uq6ube"]
 
 [ext_resource type="Script" path="res://scenes/maps/map.gd" id="1_nfd2i"]
 [ext_resource type="Script" path="res://scenes/maps/enemy_manager.gd" id="2_64x2o"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://bnavhwlfl3mdu" path="res://scenes/ui/ui.tscn" id="9_7l2v1"]
 [ext_resource type="PackedScene" uid="uid://drnnxhfq7rwxw" path="res://scenes/resource_deposits/iron_deposit.tscn" id="9_qf5aj"]
 [ext_resource type="PackedScene" uid="uid://cdw2u706qmfqx" path="res://scenes/resource_deposits/gold_deposit.tscn" id="10_kmswi"]
+[ext_resource type="Script" path="res://scenes/maps/resource_deposit_manager.gd" id="15_ipdqo"]
 [ext_resource type="AudioStream" uid="uid://ju2v8sqki3v3" path="res://assets/sound/hurt.wav" id="17_vkd5s"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_2c2fy"]
@@ -80,10 +81,11 @@ render_around = NodePath("../Vehicle")
 noise = SubResource("FastNoiseLite_2c2fy")
 tile_gradient_keys = Array[int]([1, 0, 2, 3])
 tile_gradient_values = Array[float]([-0.25, 0.2, 0.45, 1.0])
-resource_deposits = Array[PackedScene]([ExtResource("7_5lgi5"), ExtResource("8_marcq"), ExtResource("9_qf5aj"), ExtResource("10_kmswi")])
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="ResourceDeposits" type="Node3D" parent="SubViewport/World/Ground"]
+script = ExtResource("15_ipdqo")
+resource_deposits = Array[PackedScene]([ExtResource("7_5lgi5"), ExtResource("8_marcq"), ExtResource("9_qf5aj"), ExtResource("10_kmswi")])
 
 [node name="GroundEnemyTransform" type="Node3D" parent="SubViewport/World" node_paths=PackedStringArray("vehicle")]
 script = ExtResource("7_xpg5g")

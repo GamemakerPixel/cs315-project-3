@@ -1,6 +1,8 @@
 class_name ResourceDeposit
 extends Area3D
 
+signal used
+
 @export var consumable := ConsumablePool.Consumable.COAL
 @export var amount := 50.0
 @export var amount_per_gatherer_cycle := 1.0
@@ -18,4 +20,5 @@ func gather_resource() -> float:
 
 
 func _on_animation_finished(_anim_name: StringName) -> void:
+	used.emit()
 	queue_free()

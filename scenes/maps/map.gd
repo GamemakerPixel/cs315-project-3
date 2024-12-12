@@ -1,4 +1,4 @@
-extends Node
+extends SubViewportContainer
 
 @export var vehicle: Node3D
 
@@ -15,6 +15,8 @@ var power_avaliable := BASE_POWER : set = _set_power_avaliable
 
 func _init() -> void:
 	set_process_input(false)
+	if (DebugTools.check_enabled(DebugTools.DebugTool.WIDE_CAMERA)):
+		stretch_shrink = 1
 
 
 func _ready() -> void:
